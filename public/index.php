@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
- 
+
  
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -19,5 +19,3 @@ if (APP_ENV === 'dev') {
 $router = new Router();
 $response = $router->run();
 echo $response;
-
-?>
