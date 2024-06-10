@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
 namespace App\Controller\FrontOffice;
 
 use App\View\View;
 
-class BlogController
+final class BlogController
 {
     public function __construct(private View $view)
     {
