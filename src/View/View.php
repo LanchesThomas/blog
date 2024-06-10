@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View;
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
-class View
+final class View
 {
     private $twig;
 

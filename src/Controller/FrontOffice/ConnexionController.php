@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\FrontOffice;
 
 use App\View\View;
 
-class ConnexionController
+final class ConnexionController
 {
     public function __construct(private View $view)
     {
