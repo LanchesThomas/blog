@@ -6,7 +6,7 @@ namespace App\Controller\FrontOffice;
 
 use App\View\View;
 
-final class LoginController
+final class InscriptionController
 {
     public function __construct(private View $view)
     {
@@ -17,6 +17,6 @@ final class LoginController
 
            // $twig = $this->view->render();
             // echo $twig->render('frontoffice/homepage.html.twig', ['name' => 'Fabien']);
-            return $this->view->render(['template' => 'login', 'data' => []]);
+            return $this->view->render(['template' => 'inscription', 'data' => []]);
     }
 }

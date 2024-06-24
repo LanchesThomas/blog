@@ -6,40 +6,39 @@ namespace App\Service;
 
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
+use App\Controller\FrontOffice\ErrorPageController;
 use App\Controller\FrontOffice\HomeController;
-use App\Controller\FrontOffice\LoginController;
+use App\Controller\FrontOffice\InscriptionController;
 use App\View\View;
+use App\Service\Request;
 
 final class Router
 {
     private View $view;
 
-    public function __construct()
+    public function __construct(private Request $request)
     {
         $this->view = new View();
     }
 
-    public function run()
+    public function run(): string
     {
-        $action = $_GET['action'] ?? 'home';
+        $query  = $this->request->query();
+        $action = $query['action'] ?? 'home';
         if ($action === 'home') {
             $homeController = new HomeController($this->view);
             return $homeController->displayPage();
-        }
-
-        if ($action === 'blog') {
+        } elseif ($action === 'blog') {
             $blogController = new BlogController($this->view);
             return $blogController->displayPage();
-        }
-
-        if ($action === 'connexion') {
+        } elseif ($action === 'connexion') {
             $connnexionController = new ConnexionController($this->view);
             return $connnexionController->displayPage();
-        }
-
-        if ($action === 'login') {
-            $loginController = new LoginController($this->view);
+        } elseif ($action === 'inscription') {
+            $loginController = new InscriptionController($this->view);
             return $loginController->displayPage();
         }
+        $errorController = new ErrorPageController($this->view);
+            return $errorController->displayPage();
     }
 }
