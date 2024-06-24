@@ -6,11 +6,13 @@ namespace App\Service;
 
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
+use App\Controller\FrontOffice\Contact;
 use App\Controller\FrontOffice\ErrorPageController;
 use App\Controller\FrontOffice\HomeController;
 use App\Controller\FrontOffice\InscriptionController;
 use App\View\View;
 use App\Service\Request;
+use App\Service\ContactFormValidator;
 
 final class Router
 {
@@ -26,7 +28,8 @@ final class Router
         $query  = $this->request->query();
         $action = $query['action'] ?? 'home';
         if ($action === 'home') {
-            $homeController = new HomeController($this->view);
+            $contactValidator = new ContactFormValidator();
+            $homeController = new HomeController($this->request, $contactValidator, $this->view);
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
             $blogController = new BlogController($this->view);
@@ -38,6 +41,7 @@ final class Router
             $loginController = new InscriptionController($this->view);
             return $loginController->displayPage();
         }
+
         $errorController = new ErrorPageController($this->view);
             return $errorController->displayPage();
     }
