@@ -20,10 +20,4 @@ final class Contact
     public function execute()
     {
     }
-
-    // Mettre au niveau de la request
-    private function sanitizeInput(string $input): ?string
-    {
-        return is_string($input) ? strip_tags($input) : null;
-    }
 }
