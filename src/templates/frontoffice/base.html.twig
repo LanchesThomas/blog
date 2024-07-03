@@ -16,7 +16,12 @@
 </head>
 <body>
     {% include 'frontoffice/navbar.html.twig' %}
-    {% block body %}
+    {% for message in flashes  %}
+        
+        <h2>{{ message['message'] }}</h2>
+        
+    {% endfor %}
+    {% block main %}
     {% endblock %}
     {% include 'frontoffice/footer.html.twig' %}
  </div>

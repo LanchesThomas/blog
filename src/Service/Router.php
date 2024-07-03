@@ -13,14 +13,17 @@ use App\Controller\FrontOffice\InscriptionController;
 use App\View\View;
 use App\Service\Request;
 use App\Service\ContactFormValidator;
+use App\Service\Session;
 
 final class Router
 {
+    private Session $session;
     private View $view;
 
     public function __construct(private Request $request)
     {
-        $this->view = new View();
+        $this->session = new Session();
+        $this->view = new View($this->session);
     }
 
     public function run(): string
@@ -29,7 +32,7 @@ final class Router
         $action = $query['action'] ?? 'home';
         if ($action === 'home') {
             $contactValidator = new ContactFormValidator();
-            $homeController = new HomeController($this->request, $contactValidator, $this->view);
+            $homeController = new HomeController($this->request, $contactValidator, $this->view, $this->session);
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
             $blogController = new BlogController($this->view);

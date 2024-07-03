@@ -5,6 +5,7 @@ declare(strict_types=1);
  
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Service\Request;
+use App\Service\Session;
 use App\Service\Router;
 
 const APP_ENV  = 'dev';
