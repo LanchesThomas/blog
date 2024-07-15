@@ -1,69 +1,51 @@
-<style>
-        .flash {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-</style>
+
     
     <section class="container mx-auto my-32 px-10">
-    <div class="mx-auto p-10 bg-cyan-950 rounded-md flex justify-around items-center w-1/2">
-    {% for message in flashes  %}
-        
-        <h2>{{ message['message'] }}</h2>
-        
-    {% endfor %}
-        <form class="flex flex-col gap-4 text-white text-xl w-3/4 mx-auto" method="post">
-            <div class="flex flex-col gap-2">
-                <label>Prénom</label>
-                <input 
-                    type="text" 
-                    id="firstname"
-                    name="firstname" 
-                    class="rounded-md min-h-8 text-black p-2" 
-                    required>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label>Nom</label>
-                <input 
-                    type="text" 
-                    id="lastname"
-                    name="lastname" 
-                    class="rounded-md min-h-8 text-black p-2" 
-                    required>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label>Mail</label>
-                <input 
-                    type="text" 
-                    id="email"
-                    name="email" 
-                    class="rounded-md min-h-8 text-black p-2" 
-                    required>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label>Message</label>
-                <input 
-                    type="text" 
-                    id="message"
-                    name="message" 
-                    class="rounded-md min-h-32 text-black p-2" 
-                    >
-            </div>
-            <input 
-                class="p-4 bg-cyan-800 rounded-md cursor-pointer" 
-                type="submit">
-            </input>
-        </form>
+    <div class="mx-auto p-10 bg-cyan-950 rounded-md flex justify-around items-center sm:w-1/2 w-full flex-col gap-4">  
+                    <form class="flex flex-col gap-4 text-white text-xl w-3/4 mx-auto" method="post">                        
+                        <div class="flex flex-col gap-2">
+                            <label>Prénom</label>
+                            <input 
+                                type="text" 
+                                id="firstname"
+                                name="firstname" 
+                                class="rounded-md min-h-8 text-black p-2"
+                                value="{{ oldInputs['firstname'] }}"
+                                required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label>Nom</label>
+                            <input 
+                                type="text" 
+                                id="lastname"
+                                name="lastname" 
+                                class="rounded-md min-h-8 text-black p-2" 
+                                required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label>Mail</label>
+                            <input 
+                                type="text" 
+                                id="email"
+                                name="email" 
+                                class="rounded-md min-h-8 text-black p-2" 
+                                required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label>Message</label>
+                            <input 
+                                type="text" 
+                                id="message"
+                                name="message" 
+                                class="rounded-md min-h-32 text-black p-2" 
+                                >
+                        </div>
+                        <input 
+                            class="p-4 bg-cyan-800 rounded-md cursor-pointer" 
+                            type="submit">
+                        </input>
+                    </form>
+                
+
     </div>
 </section>

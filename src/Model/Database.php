@@ -1,23 +1,22 @@
 <?php
 
-class Database
+declare(strict_types=1);
+
+namespace App\Model;
+
+use PDO;
+
+class ConnectDB
 {
-    private static $instance = null;
+    private static $pdo = null;
 
-    private function __construct()
+    public static function getPDO()
     {
-    }
-
-    public static function getInstance()
-    {
-        if (!self::$instance) {
-            try {
-                self::$instance = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $e) {
-                die('Erreur de connexion à la base de données : ' . $e->getMessage());
-            }
+        require_once '../config/config.php';
+        if (self::$pdo === null) {
+            self::$pdo = new PDO(DB_HOST, DB_USER, DB_PASS, DB_OPTIONS);
+            self::$pdo->exec('SET NAMES UTF8');
         }
-        return self::$instance;
+        return self::$pdo;
     }
 }

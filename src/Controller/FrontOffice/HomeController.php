@@ -31,24 +31,14 @@ final class HomeController
             if ($this->contactValidator->isValid($firstname, $lastname, $email, $message)) {
                 $this->session->addFlashes('success', 'Votre message a été envoyé avec succès.');
                 $this->session->clearOldInput();
-                //$flashes = $this->session->getFlashes();
+
 
                 $redirect = new \App\Service\RedirectResponse('/home');
                 $redirect->send();
             } else {
-                $this->session->addFlashes('error', 'Veuillez remplir tous les champs.');
-                // $flashes = $this->session->getFlashes();
-                $this->session->setOldInput($_POST);
-
-                $redirect = new \App\Service\RedirectResponse('/home');
-                $redirect->send();
+                $this->session->addFlashes('error', $this->contactValidator->getErrorMessage());
+                $oldInputs = ['firstname' => $firstname, 'lastname' => $lastname, 'email' => $email, 'message' => $message];
             }
-
-            $oldInputs = [
-                'name' => htmlspecialchars($this->session->getOldInput('name')),
-                'email' => htmlspecialchars($this->session->getOldInput('email')),
-                'message' => htmlspecialchars($this->session->getOldInput('message'))
-            ];
         }
 
             return $this->view->render(['template' => 'home', 'data' => [
