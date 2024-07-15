@@ -21,7 +21,7 @@ final class Session
         }
     }
 
-    public function addFlashes(string $type, string $message): void
+    public function addFlashes(string $type, string|array $message): void
     {
         $_SESSION['flashes'][] = [
             'type' => $type,
@@ -32,7 +32,7 @@ final class Session
     public function getFlashes(): array
     {
         $flashes = $_SESSION['flashes'];
-        // unset($_SESSION['flashes']);
+        unset($_SESSION['flashes']);
         return $flashes;
     }
 

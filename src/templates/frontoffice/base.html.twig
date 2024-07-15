@@ -8,7 +8,7 @@
     
     <!-- TAILWIND SCRIPT -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link href="css/styles.css" rel="stylesheet" />
     <!-- ADD CUSTOM FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,13 +16,29 @@
 </head>
 <body>
     {% include 'frontoffice/navbar.html.twig' %}
-    {% for message in flashes  %}
+    <main class="main">
+        {% block header %}
+
+        {% endblock %}
+        {% for messages in flashes  %}
+            {% if messages['type'] == 'success' %}
+                {% if messages['message'] %}
+                    <p class="{{ messages['type'] }}">{{ messages['message'] }}</p>
+                {% endif %}
+
+            {% elseif messages['type'] == 'error' %}  
+                {% for message in messages['message'] %}
+                    {% if message %}
+                         <p class="{{ messages['type'] }}">{{ message }}</p> 
+                    {% endif %} 
+                {% endfor %} 
+            {% endif %}
+        {% endfor %} 
         
-        <h2>{{ message['message'] }}</h2>
-        
-    {% endfor %}
-    {% block main %}
-    {% endblock %}
+
+        {% block main %}
+        {% endblock %}
+    </main>
     {% include 'frontoffice/footer.html.twig' %}
  </div>
    

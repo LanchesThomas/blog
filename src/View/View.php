@@ -21,6 +21,7 @@ final class View
     public function render(array $data): string
     {
         $data['data']['flashes'] = $this->session->getFlashes();
+
         // var_dump($data);
         // die();
         return $this->twig->render("frontoffice/{$data['template']}.html.twig", $data['data']);

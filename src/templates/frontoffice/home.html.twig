@@ -2,7 +2,7 @@
 
 {% block title %}Accueil{% endblock %}
 
-{% block main %}
+{% block header %}
 <section class="mt-14 mx-auto bg-[url('assets/banner.avif')] h-96 relative p-4">
     <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>  
     <div class="container mx-auto flex justify-center items-center flex-col h-full relative text-center ">
@@ -10,8 +10,12 @@
         <p class="text-white mt-5">Retrouvez tous mes derniers articles sur l'actualité du numérique et quelques billets d'humeurs</p>
     </div>
 </section>
-<section class="flex flex-col container mx-auto my-32 px-10 justify-around lg:flex-row" >
-    <div class="w-1/2">
+{% endblock %}
+
+{% block main %}
+
+<section class="flex flex-col container mx-auto sm:my-32 my-16 gap-4 px-10 justify-around lg:flex-row" >
+    <div class="w-full sm:w-1/2">
         <p class="text-justify" style="font-size: clamp(1rem, 0.917rem + 0.417vw, 1.25rem);">
             Reconverti du monde de la musique vers le <span class="font-bold"> développement web </span> depuis deux ans, j'ai développé des compétences en <span class="font-bold">designs, marketing, communication, référencement et rédaction</span> </br>
             Passionné par le développement <span class="font-bold">frontend</span> ainsi que par l'UX et l'UI des interfaces numériques, je suis désormais déterminé à approfondir mes connaissances en <span class="font-bold">backend.</span></br>
@@ -19,13 +23,13 @@
              Je suis prêt à relever de nouveaux défis et à continuer d'apprendre pour atteindre cet objectif.
         </p>
     </div>
-    <div class="w-1/4 rounded-md overflow-hidden">
+    <div class="sm:w-1/4 w-full rounded-md overflow-hidden">
         <img src="assets/photo.jpg" class="cover h-full">
     </div>
 </section>
 <section class="container mx-auto my-32 px-10 ">
-    <div class="w-full p-10 bg-cyan-950 rounded-md flex justify-around items-center">
-        <div class="text-white flex flex-col gap-6 text-xl font-black">
+    <div class="w-full p-10 bg-cyan-950 rounded-md flex justify-around items-center flex-col lg:flex-row gap-4 text-center">
+        <div class="text-white flex flex-col gap-6 text-xl font-black ">
             <p>Mon travail vous plaît ?</p>
             <p>N'hésitez pas à consulter mon CV !</p>
         </div>
@@ -34,5 +38,7 @@
         </a>
     </div>
 </section>
+            
 {% include 'frontoffice/contact-form.html.twig' %}
+
 {% endblock %}
