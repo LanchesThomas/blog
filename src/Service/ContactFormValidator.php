@@ -68,7 +68,12 @@ class ContactFormValidator extends Validator
 
     private function isMessageValid($message): bool
     {
-        return $message !== null && $this->messageIsValid($message);
+        $isEmpty = strlen(trim($message)) === 0 ;
+        if ($isEmpty) {
+            $this->errorMessage[] = 'Le champ message ne peut pas être vide';
+            return false;
+        }
+        return true;
     }
 
     public function getErrorMessage(): array
