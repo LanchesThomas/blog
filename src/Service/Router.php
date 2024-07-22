@@ -14,16 +14,19 @@ use App\View\View;
 use App\Service\Request;
 use App\Service\ContactFormValidator;
 use App\Service\Session;
+use App\Model\BlogModel;
 
 final class Router
 {
     private Session $session;
     private View $view;
+    private BlogModel $blogModel;
 
     public function __construct(private Request $request)
     {
         $this->session = new Session();
         $this->view = new View($this->session);
+        $this->blogModel = new BlogModel();
     }
 
     public function run(): string
@@ -35,7 +38,7 @@ final class Router
             $homeController = new HomeController($this->request, $contactValidator, $this->view, $this->session);
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
-            $blogController = new BlogController($this->view);
+            $blogController = new BlogController($this->view, $this->blogModel);
             return $blogController->displayPage();
         } elseif ($action === 'connexion') {
             $connnexionController = new ConnexionController($this->view);

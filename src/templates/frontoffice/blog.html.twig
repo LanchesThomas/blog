@@ -7,4 +7,16 @@
     <h1 class="text-2xl font-bold">Welcome to the Blog Page</h1>
     <p>This is the home page content.</p>
 </div>
+{% for post in listPosts %}
+                <div class="card blog-card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ post.title }}</h4>
+                        <p> {{ post.chapo }} </p>
+                        <p> {{ post.content }} </p>
+                        <p> {{ post.author }} {{ post.publicationDate }}
+                  </div>
+                  <hr>
+                </div>
+
+        {% endfor %}
 {% endblock %}

@@ -12,9 +12,8 @@ class ConnectDB
 
     public static function getPDO()
     {
-        require_once '../config/config.php';
         if (self::$pdo === null) {
-            self::$pdo = new PDO(DB_HOST, DB_USER, DB_PASS, DB_OPTIONS);
+            self::$pdo = new PDO('mysql:host=localhost;dbname=blog;charset=UTF8', 'root', '', array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             self::$pdo->exec('SET NAMES UTF8');
         }
         return self::$pdo;
