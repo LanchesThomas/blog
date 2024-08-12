@@ -2,21 +2,27 @@
 
 {% block title %}Home Page{% endblock %}
 
-{% block main %}
-<div class="pt-16">
-    <h1 class="text-2xl font-bold">Welcome to the Blog Page</h1>
-    <p>This is the home page content.</p>
-</div>
-{% for post in listPosts %}
-                <div class="card blog-card">
-                    <div class="card-body">
-                        <h4 class="card-title">{{ post.title }}</h4>
-                        <p> {{ post.chapo }} </p>
-                        <p> {{ post.content }} </p>
-                        <p> {{ post.author }} {{ post.publicationDate }}
-                  </div>
-                  <hr>
-                </div>
 
-        {% endfor %}
+{% block header %}
+<section class="mt-14 mx-auto bg-[url('assets/banner.avif')] h-96 relative p-4">
+    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>  
+    <div class="container mx-auto flex justify-center items-center flex-col h-full relative text-center ">
+        <h1 class="font-bold text-white uppercase" style="font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);">Découvrez les derniers articles.</h1>
+    </div>
+</section>
+{% endblock %}
+{% block main %}
+<div class="container mx-auto grid grid-cols-3 my-16 gap-4">
+    {% for post in listPosts %}
+                    <a href="?action=blog&postId={{ post.id }}" class="flex flex-col gap-4 border border-cyan-900 rounded-md p-4">
+                        <div class="bg-cyan-950 h-64 flex items-center justify-center">
+                            <h4 class="text-white font-extrabold text-xl text-center">{{ post.title }}</h4>
+                        </div>
+                        <div class="flex flex-col h-1/2 justify-between">
+                            <p> {{ post.chapo }} </p>
+                            <p class=""> {{ post.pseudo }} {{ post.createdAt|date('d/m/Y') }}               
+                        </div>
+                    </a>
+            {% endfor %}
+</div>
 {% endblock %}

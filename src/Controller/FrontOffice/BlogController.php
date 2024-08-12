@@ -16,9 +16,6 @@ final class BlogController
     public function displayPage(): string
     {
         $posts = $this->blogModel->selectAllPosts();
-
-           // $twig = $this->view->render();
-            // echo $twig->render('frontoffice/homepage.html.twig', ['name' => 'Fabien']);
             return $this->view->render(['template' => 'blog', 'data' => [
                 'listPosts' => $posts
             ]]);
