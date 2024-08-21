@@ -6,20 +6,21 @@ namespace App\Controller\FrontOffice;
 
 use App\View\View;
 use App\Model\BlogModel;
+use App\Model\Repository\PostsRepository;
 
 final class PostController
 {
-    public function __construct(private View $view, private BlogModel $blogModel, private int $postId)
+    public function __construct(private View $view, private PostsRepository $postsRepository, private int $postId)
     {
         $this->postId = $postId;
     }
 
     public function displayPage(): string
     {
-        $post = $this->blogModel->selectPost($this->postId);
-        $comment = $this->blogModel->selectCommentByArticle($this->postId);
+        $post = $this->postsRepository->find($this->postId);
+        // $comment = $this->postsRepository->selectCommentByArticle($this->postId);
             return $this->view->render(['template' => 'post', 'data' => [
-                'post' => $post, 'comments' => $comment
+                'post' => $post
             ]]);
     }
 }
