@@ -15,20 +15,21 @@ use App\Service\Request;
 use App\Service\ContactFormValidator;
 use App\Service\Session;
 use App\Model\BlogModel;
+use App\Model\Repository\PostsRepository;
 use App\Service\MailerBlog;
 
 final class Router
 {
     private Session $session;
     private View $view;
-    private BlogModel $blogModel;
+    private PostsRepository $postsRepository;
     private MailerBlog $mailer;
 
     public function __construct(private Request $request)
     {
         $this->session = new Session();
         $this->view = new View($this->session);
-        $this->blogModel = new BlogModel();
+        $this->postsRepository = new PostsRepository();
         $this->mailer  = new MailerBlog(['smtp' => '127.0.0.1', 'smtp_port' => '1025', 'from' => 'infoblog@mail.fr', 'sender' => 'infoblog']);
     }
 
@@ -43,10 +44,10 @@ final class Router
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
             if (isset($post) && $post) {
-                $postController = new PostController($this->view, $this->blogModel, $post);
+                $postController = new PostController($this->view, $this->postsRepository, $post);
                 return $postController->displayPage();
             }
-            $blogController = new BlogController($this->view, $this->blogModel);
+            $blogController = new BlogController($this->view, $this->postsRepository);
             return $blogController->displayPage();
         } elseif ($action === 'connexion') {
             $connnexionController = new ConnexionController($this->view);
