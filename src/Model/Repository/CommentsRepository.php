@@ -6,10 +6,11 @@ namespace App\Model\Repository;
 
 use App\Model\Entity\Comments;
 use App\Service\ConnectDB;
+use App\Model\Entity\Post;
 
 final readonly class CommentsRepository
 {
-    public function __construct(private ConnectDB $database)
+    public function __construct()
     {
     }
 
@@ -19,7 +20,7 @@ final readonly class CommentsRepository
             SELECT 
                 comments.id, 
                 comments.statut, 
-                comments.created_at, 
+                comments.createdAt, 
                 comments.content, 
                 posts.title AS post_title, 
                 users.pseudo AS user_pseudo 
@@ -40,7 +41,7 @@ final readonly class CommentsRepository
             $comments[] = new Comments(
                 id: (int)$data['id'],
                 statut: $data['statut'],
-                createdAt: $data['created_at'],
+                createdAt: $data['createdAt'],
                 content: $data['content'],
                 post: $data['post_title'],
                 pseudo: $data['user_pseudo']
@@ -60,7 +61,7 @@ final readonly class CommentsRepository
             SELECT 
                 comments.id, 
                 comments.statut, 
-                comments.created_at, 
+                comments.createdAt, 
                 comments.content, 
                 posts.title AS post_title, 
                 users.pseudo AS user_pseudo 
@@ -74,7 +75,7 @@ final readonly class CommentsRepository
                 comments.id = :id
         ';
 
-        $stmt = $this->database->getPDO()->prepare($sql);
+        $stmt = ConnectDB::getPDO()->prepare($sql);
         $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
@@ -88,10 +89,10 @@ final readonly class CommentsRepository
         return new Comments(
             id: (int)$data['id'],
             statut: $data['statut'],
-            createdAt: $data['created_at'],  // Assurez-vous que le nom de la colonne correspond
+            createdAt: $data['createdAt'],
             content: $data['content'],
-            post: $data['post_title'],       // Nom du post récupéré par la jointure
-            pseudo: $data['user_pseudo']     // Pseudo de l'utilisateur récupéré par la jointure
+            post: $data['post_title'],
+            pseudo: $data['user_pseudo']
         );
     }
 
@@ -111,9 +112,9 @@ final readonly class CommentsRepository
             SELECT 
                 comments.id, 
                 comments.statut, 
-                comments.created_at, 
+                comments.createdAt, 
                 comments.content, 
-                posts.title AS post_title, 
+                posts.id AS post_id, 
                 users.pseudo AS user_pseudo 
             FROM 
                 comments
@@ -144,10 +145,10 @@ final readonly class CommentsRepository
         return new Comments(
             id: (int)$data['id'],
             statut: $data['statut'],
-            createdAt: $data['created_at'],  // Assurez-vous que le nom de la colonne correspond
+            createdAt: $data['createdAt'],  // Assurez-vous que le nom de la colonne correspond
             content: $data['content'],
-            post: $data['post_title'],       // Nom du post récupéré par la jointure
-            pseudo: $data['user_pseudo']     // Pseudo de l'utilisateur récupéré par la jointure
+            post: $data['post_id'],
+            pseudo: $data['user_pseudo']
         );
     }
 
@@ -167,9 +168,9 @@ final readonly class CommentsRepository
             SELECT 
                 comments.id, 
                 comments.statut, 
-                comments.created_at, 
+                comments.createdAt, 
                 comments.content, 
-                posts.title AS post_title, 
+                posts.id AS post_id, 
                 users.pseudo AS user_pseudo 
             FROM 
                 comments
@@ -231,10 +232,10 @@ final readonly class CommentsRepository
             $comments[] = new Comments(
                 id: (int)$data['id'],
                 statut: $data['statut'],
-                createdAt: $data['created_at'],  // Assurez-vous que le nom de la colonne correspond
+                createdAt: $data['createdAt'],  // Assurez-vous que le nom de la colonne correspond
                 content: $data['content'],
-                post: $data['post_title'],       // Nom du post récupéré par la jointure
-                pseudo: $data['user_pseudo']     // Pseudo de l'utilisateur récupéré par la jointure
+                post: $data['post_id'],
+                pseudo: $data['user_pseudo']       // Nom du post récupéré par la jointure
             );
         }
 
@@ -243,10 +244,38 @@ final readonly class CommentsRepository
 
 
 
-    // public function create(User $user): bool
-    // {
-    // //insertion d'un user dans la BDD
-    // }
+    public function create(Post $post, string $comments): void
+    {
+        $postId = $post->getId();
+        $statut = 1;
+        $createdAt = (new \DateTime())->format('Y-m-d H:i:s');
+
+        $newComment = new Comments(
+            id: null,
+            statut: $statut,
+            createdAt: $createdAt,
+            content: $comments,
+            post: $postId,
+            pseudo: null
+        );
+
+        $sql = '
+        INSERT INTO comments (statut, createdAt, content, post_id, user_id)
+        VALUES (:statut, :createdAt, :content, :post_id, :user_id)
+    ';
+
+    // Préparer la requête
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':statut', $newComment->getStatut(), \PDO::PARAM_INT);
+        $stmt->bindValue(':createdAt', $newComment->getCreatedAt(), \PDO::PARAM_STR);
+        $stmt->bindValue(':content', $newComment->getContent(), \PDO::PARAM_STR);
+        $stmt->bindValue(':post_id', $newComment->getPost(), \PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', 1);
+
+    // Exécuter la requête
+        $stmt->execute();
+    }
 
     // public function update(User $user): bool
     // {
