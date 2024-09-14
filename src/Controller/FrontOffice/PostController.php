@@ -11,10 +11,11 @@ use App\Service\Request;
 use App\Controller\FrontOffice\CommentsController;
 use App\Model\Entity\Comments;
 use App\Model\Repository\CommentsRepository;
+use App\Service\Session;
 
 final class PostController
 {
-    public function __construct(private View $view, private PostsRepository $postsRepository, private int $postId, private Request $request, private CommentsRepository $commentsRepository)
+    public function __construct(private View $view, private PostsRepository $postsRepository, private int $postId, private Request $request, private CommentsRepository $commentsRepository, private Session $session)
     {
         $this->postId = $postId;
     }
@@ -24,11 +25,26 @@ final class PostController
         $post = $this->postsRepository->find($this->postId);
         if ($this->request->getMethod() === 'POST') {
             $comment = $this->request->getRequestData('comments') ?? '';
-            $this->commentsRepository->create($post, $comment);
+            try {
+                $this->commentsRepository->create($post, $comment);
+                $this->session->addFlashes('success', 'Votre commentaire a été envoyé avec succès.');
+            } catch (\Exception $e) {
+                $this->session->addFlashes('error', 'Échec de l\'envoi du commentaire. Veuillez réessayer plus tard.');
+            }
         }
-         $comments = $this->commentsRepository->findBy(['post_id' => $this->postId], ['createdAt' => 'ASC'], 3);
+
+        $limit  = 3;
+
+        if ($this->request->queryAction('c') === '1') {
+            $limit = null;
+        }
+
+        $comments = $this->commentsRepository->findBy(['post_id' => $this->postId], ['createdAt' => 'DESC'], $limit);
+         // Récupérer le nombre total de commentaires
+        $totalComments = count($this->commentsRepository->findBy(['post_id' => $this->postId]));
+
             return $this->view->render(['template' => 'post', 'data' => [
-                'post' => $post, 'comments' => $comments
+                'post' => $post, 'comments' => $comments, 'totalComments' => $totalComments
             ]]);
     }
 }

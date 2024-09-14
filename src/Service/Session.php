@@ -27,6 +27,10 @@ final class Session
             'type' => $type,
             'message' => $message,
         ];
+        // echo '<pre>';
+        //     var_dump($_SESSION['flashes']);
+        // echo '</pre>';
+        // die;
     }
 
     public function getFlashes(): array
@@ -49,5 +53,29 @@ final class Session
     public function clearOldInput(): void
     {
         unset($_SESSION['old']);
+    }
+
+    public function setUser(array $userData): void
+    {
+        $_SESSION['user'] = $userData;
+        // echo '<pre>';
+        //     var_dump($_SESSION['user']);
+        // echo '</pre>';
+        // die;
+    }
+
+    public function getUser(): ?array
+    {
+        return $_SESSION['user'] ?? null;
+    }
+
+    public function clearUser(): void
+    {
+        unset($_SESSION['user']);
+    }
+
+    public function isAuthenticated(): bool
+    {
+        return isset($_SESSION['user']);
     }
 }

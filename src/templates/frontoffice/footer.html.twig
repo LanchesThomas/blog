@@ -20,7 +20,10 @@
             </a>
         </li>
     </ul>
-    <div class="absolute bottom-3 right-3 text-white">
-        <a href="?action=admin">Administration</a>
-    </div>
+    {% if user %}
+        <div class="absolute bottom-3 right-3 text-white">
+            <a href="?action=admin">Administration</a>
+        </div>
+    {% endif %}
+    
 </div>

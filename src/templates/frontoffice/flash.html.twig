@@ -1,0 +1,20 @@
+{% for messages in flashes %}
+    {% if messages['type'] == 'success' %}
+        {% if messages['message'] is iterable %}
+            {% for message in messages['message'] %}
+                <p class="{{ messages['type'] }}">{{ message }}</p>
+            {% endfor %}
+        {% else %}
+            <p class="{{ messages['type'] }}">{{ messages['message'] }}</p>
+        {% endif %}
+
+    {% elseif messages['type'] == 'error' %}
+        {% if messages['message'] is iterable %}
+            {% for message in messages['message'] %}
+                <p class="{{ messages['type'] }}">{{ message }}</p>
+            {% endfor %}
+        {% else %}
+            <p class="{{ messages['type'] }}">{{ messages['message'] }}</p>
+        {% endif %}
+    {% endif %}
+{% endfor %}

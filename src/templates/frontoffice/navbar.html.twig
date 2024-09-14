@@ -8,10 +8,15 @@
         <a href="?action=home" class="text-white text-xl uppercase" style="font-family: 'Tiny5', sans-serif;">
             infoblog
         </a>
-        <nav class="flex gap-4 text-white font-bold">
-            <a href="?action=connexion">Connexion</a>
-            <a href="?action=inscription">Inscription</a>
-        </nav>
+        {% if not user %}
+            <nav class="flex gap-4 text-white font-bold">
+                <a href="?action=connexion">Connexion</a>
+                <a href="?action=inscription">Inscription</a>
+            </nav>
+        {% endif %}
+        {% if user %}
+            <a href="?action=logout" class="text-white font-bold"> Déconnexion </a>
+        {% endif %}
     </div>
 </div>
 
@@ -57,10 +62,10 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="navbar-menu absolute bottom-0 w-full bg-cyan-950 z-[-1]">
         <nav class="flex flex-col items-end gap-4 text-white font-bold p-4" >
-            <a href="?action=home">Accueil</a>
-            <a href="?action=blog">Blog</a>
-            <a href="?action=connexion">Connexion</a>
-            <a href="?action=inscription">Inscription</a>
+            <a href="/?action=home">Accueil</a>
+            <a href="/?action=blog">Blog</a>
+            <a href="/?action=connexion">Connexion</a>
+            <a href="/?action=inscription">Inscription</a>
         </nav>
     </div>
 </div>

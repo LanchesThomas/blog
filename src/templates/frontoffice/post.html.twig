@@ -36,7 +36,7 @@
             ></input>
         </div>
     </form>   
-    <div class="flex flex-col gap-4 mt-8">
+    <div class="flex flex-col gap-4 mt-8" id="comments">
     <h2 class="font-bold" style="font-size: clamp(1rem, 1rem + 2.5vw, 2rem);">Commentaires</h2>
         <div class="flex flex-col gap-4 items-center" >
             {% for comment in comments %}
@@ -48,7 +48,15 @@
                         
                     </div>
             </div>
-            {% endfor %}           
+            {% endfor %} 
+
+            {% if totalComments > 3 and totalComments != comments|length %}
+                <a href="/?action=blog&postId={{ post.id }}&c=1#comments" class="p-4 bg-cyan-800 rounded-md cursor-pointer text-white">Afficher plus</a>
+            {% elseif totalComments == comments|length and comments|length > 3%}
+                <a href="/?action=blog&postId={{ post.id }}&c=0#comments" class="p-4 bg-cyan-800 rounded-md cursor-pointer text-white">Afficher moins</a>
+            {% endif %}
+
+
         </div>
         
     </div>
