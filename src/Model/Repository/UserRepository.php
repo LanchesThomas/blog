@@ -9,7 +9,7 @@ use App\Service\ConnectDB;
 
 final readonly class UserRepository
 {
-    public function __construct(private ConnectDB $database)
+    public function __construct()
     {
     }
 
@@ -24,7 +24,7 @@ final readonly class UserRepository
             $users[] = new User(
                 id: (int)$data['id'],
                 pseudo: $data['pseudo'],
-                email: $data['email'],
+                mail: $data['email'],
                 password: $data['password'],
                 role: $data['role']
             );
@@ -34,10 +34,10 @@ final readonly class UserRepository
     }
 
 
-    public function find(int $id): ?User
+    public function find(string $mail): ?User
     {
-        $stmt = $this->database->getPDO()->prepare('SELECT * FROM user WHERE id = :id');
-        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt = ConnectDB::getPDO()->prepare('SELECT * FROM users WHERE mail = :mail');
+        $stmt->bindValue(':mail', $mail, \PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
@@ -48,7 +48,7 @@ final readonly class UserRepository
         return new User(
             id: (int)$data['id'],
             pseudo: $data['pseudo'],
-            email: $data['email'],
+            mail: $data['mail'],
             password: $data['password'],
             role: $data['role']
         );
@@ -64,7 +64,7 @@ final readonly class UserRepository
         }
         $queryString = implode(' AND ', $queryParts);
 
-        $sql = "SELECT * FROM user WHERE $queryString";
+        $sql = "SELECT * FROM users WHERE $queryString";
         $req = ConnectDB::getPDO()->prepare($sql);
 
         foreach ($criteria as $key => $value) {
@@ -81,7 +81,7 @@ final readonly class UserRepository
         return new User(
             id: (int)$data['id'],
             pseudo: $data['pseudo'],
-            email: $data['email'],
+            mail: $data['mail'],
             password: $data['password'],
             role: $data['role']
         );
@@ -152,7 +152,7 @@ final readonly class UserRepository
             $users[] = new User(
                 id: (int)$data['id'],
                 pseudo: $data['pseudo'],
-                email: $data['email'],
+                mail: $data['mail'],
                 password: $data['password'],
                 role: $data['role']
             );
@@ -162,10 +162,30 @@ final readonly class UserRepository
     }
 
 
-    // public function create(User $user): bool
-    // {
-    // //insertion d'un user dans la BDD
-    // }
+    public function create(string $mail, string $pseudo, string $password): void
+    {
+
+        $newUser = new User(
+            id: null,
+            mail: $mail,
+            pseudo: $pseudo,
+            password: $password,
+            role: 'admin'
+        );
+
+        $sql = '
+        INSERT INTO users (mail, pseudo, password, role)
+        VALUES (:mail, :pseudo, :password, :role)
+        ';
+
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+        $stmt->bindValue(':mail', $newUser->getEmail(), \PDO::PARAM_STR);
+        $stmt->bindValue(':pseudo', $newUser->getPseudo(), \PDO::PARAM_STR);
+        $stmt->bindValue(':password', $newUser->getPassword(), \PDO::PARAM_STR);
+        $stmt->bindValue(':role', $newUser->getRole(), \PDO::PARAM_STR);
+
+        $stmt->execute();
+    }
 
     // public function update(User $user): bool
     // {

@@ -10,6 +10,7 @@ use App\Controller\FrontOffice\ErrorPageController;
 use App\Controller\FrontOffice\HomeController;
 use App\Controller\FrontOffice\InscriptionController;
 use App\Controller\FrontOffice\PostController;
+use App\Controller\FrontOffice\LogOutController;
 use App\View\View;
 use App\Service\Request;
 use App\Service\ContactFormValidator;
@@ -17,6 +18,7 @@ use App\Service\Session;
 use App\Model\BlogModel;
 use App\Model\Repository\PostsRepository;
 use App\Model\Repository\CommentsRepository;
+use App\Model\Repository\UserRepository;
 use App\Service\MailerBlog;
 
 final class Router
@@ -25,6 +27,7 @@ final class Router
     private View $view;
     private PostsRepository $postsRepository;
     private CommentsRepository $commentsRepository;
+    private UserRepository $userRepository;
     private MailerBlog $mailer;
 
     public function __construct(private Request $request)
@@ -33,6 +36,7 @@ final class Router
         $this->view = new View($this->session);
         $this->postsRepository = new PostsRepository();
         $this->commentsRepository = new CommentsRepository();
+        $this->userRepository = new UserRepository();
         $this->mailer  = new MailerBlog(['smtp' => '127.0.0.1', 'smtp_port' => '1025', 'from' => 'infoblog@mail.fr', 'sender' => 'infoblog']);
     }
 
@@ -47,17 +51,20 @@ final class Router
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
             if (isset($post) && $post) {
-                $postController = new PostController($this->view, $this->postsRepository, $post, $this->request, $this->commentsRepository);
+                $postController = new PostController($this->view, $this->postsRepository, $post, $this->request, $this->commentsRepository, $this->session);
                 return $postController->displayPage();
             }
             $blogController = new BlogController($this->view, $this->postsRepository);
             return $blogController->displayPage();
         } elseif ($action === 'connexion') {
-            $connnexionController = new ConnexionController($this->view);
+            $connnexionController = new ConnexionController($this->view, $this ->request, $this->userRepository, $this->session);
             return $connnexionController->displayPage();
         } elseif ($action === 'inscription') {
-            $loginController = new InscriptionController($this->view);
+            $loginController = new InscriptionController($this->view, $this->request, $this->userRepository, $this->session);
             return $loginController->displayPage();
+        } elseif ($action === 'logout') {
+            $logOutController = new LogOutController($this->session);
+            return $logOutController->logOut();
         }
 
         $errorController = new ErrorPageController($this->view);

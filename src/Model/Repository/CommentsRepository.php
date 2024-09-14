@@ -264,7 +264,6 @@ final readonly class CommentsRepository
         VALUES (:statut, :createdAt, :content, :post_id, :user_id)
     ';
 
-    // Préparer la requête
         $stmt = ConnectDB::getPDO()->prepare($sql);
 
         $stmt->bindValue(':statut', $newComment->getStatut(), \PDO::PARAM_INT);
@@ -273,7 +272,6 @@ final readonly class CommentsRepository
         $stmt->bindValue(':post_id', $newComment->getPost(), \PDO::PARAM_INT);
         $stmt->bindValue(':user_id', 1);
 
-    // Exécuter la requête
         $stmt->execute();
     }
 

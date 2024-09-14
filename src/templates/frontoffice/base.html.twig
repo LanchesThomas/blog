@@ -18,24 +18,7 @@
     {% include 'frontoffice/navbar.html.twig' %}
     <main class="main">
         {% block header %}
-
         {% endblock %}
-        {% for messages in flashes  %}
-            {% if messages['type'] == 'success' %}
-                {% if messages['message'] %}
-                    <p class="{{ messages['type'] }}">{{ messages['message'] }}</p>
-                {% endif %}
-
-            {% elseif messages['type'] == 'error' %}  
-                {% for message in messages['message'] %}
-                    {% if message %}
-                         <p class="{{ messages['type'] }}">{{ message }}</p> 
-                    {% endif %} 
-                {% endfor %} 
-            {% endif %}
-        {% endfor %} 
-        
-
         {% block main %}
         {% endblock %}
     </main>

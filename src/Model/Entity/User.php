@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 
 final class User
 {
-    public function __construct(private readonly int $id, private string $pseudo, private string $email, private string $password, private string $role)
+    public function __construct(private readonly ?int $id, private string $pseudo, private string $mail, private string $password, private string $role)
     {
     }
 
@@ -27,12 +27,12 @@ final class User
 
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->mail;
     }
 
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        $this->mail = $email;
     }
 
     public function getPassword(): string

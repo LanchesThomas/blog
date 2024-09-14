@@ -42,9 +42,9 @@ final class Request
     }
 
 
-    public function queryAction(string $key): string
+    public function queryAction(string $key): ?string
     {
-        return $this->request[$key] ?? null;
+        return $this->query[$key] ?? null;
     }
 
     public function getRequestData(string $key): ?string

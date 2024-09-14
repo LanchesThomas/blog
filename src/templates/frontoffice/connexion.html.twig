@@ -5,15 +5,16 @@
 {% block main %}
 <div class="h-screen w-full flex justify-center items-center border-2 border-red-600">
     <div class="m-auto p-10 bg-cyan-950 text-white w-1/2 flex flex-col justify-center items-center rounded-md">
+        {% include 'frontoffice/flash.html.twig' %}
         <p class="text-center text-xl font-bold pb-4 mb-4 border-b border-white w-full">Se connecter</p>
-        <form class="flex flex-col gap-8 w-full items-center justify-around h-3/4">
+        <form class="flex flex-col gap-8 w-full items-center justify-around h-3/4" method="post">
             <div class="flex flex-col justify-center gap-2 w-1/2">
                 <label for="email" class="text-md uppercase font-bold">Email</label>
-                <input type="text" name="email" class="w-full h-10"></input>
+                <input type="email" name="mail" class="w-full h-10 p-1 text-black"></input>
             </div>
             <div class="flex flex-col justify-center gap-2 w-1/2">
                 <label for="password"  class="text-md uppercase font-bold">Mot de passe</label>
-                <input type="text" name="password" class="w-full h-10"></input>
+                <input type="password" name="password" class="w-full h-10 text-black p-1"></input>
             </div>
             <div class="flex flex-col justify-center gap-2 w-1/2 mt-4">
                 <input type="submit" name="submit" class="bg-rose-600 w-1/2 rounded-md h-10 mx-auto"></input>
