@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Controller\BackOffice\AddPostController;
+use App\Controller\BackOffice\AdminController;
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
 use App\Controller\FrontOffice\ErrorPageController;
@@ -14,6 +16,7 @@ use App\Controller\FrontOffice\LogOutController;
 use App\View\View;
 use App\Service\Request;
 use App\Service\ContactFormValidator;
+use App\Service\Validator;
 use App\Service\Session;
 use App\Model\BlogModel;
 use App\Model\Repository\PostsRepository;
@@ -29,14 +32,16 @@ final class Router
     private CommentsRepository $commentsRepository;
     private UserRepository $userRepository;
     private MailerBlog $mailer;
+    private Validator $validator;
 
     public function __construct(private Request $request)
     {
         $this->session = new Session();
         $this->view = new View($this->session);
-        $this->postsRepository = new PostsRepository();
+        $this->postsRepository = new PostsRepository($this->session);
         $this->commentsRepository = new CommentsRepository();
         $this->userRepository = new UserRepository();
+        $this->validator = new Validator();
         $this->mailer  = new MailerBlog(['smtp' => '127.0.0.1', 'smtp_port' => '1025', 'from' => 'infoblog@mail.fr', 'sender' => 'infoblog']);
     }
 
@@ -65,6 +70,15 @@ final class Router
         } elseif ($action === 'logout') {
             $logOutController = new LogOutController($this->session);
             return $logOutController->logOut();
+        } elseif ($this->session->isAuthenticated()) {
+            if ($action === 'admin') {
+                $adminController = new AdminController($this->view, $this->postsRepository);
+                return $adminController->displayPage();
+            }
+            if ($action === 'addPost') {
+                $addPostController = new AddPostController($this->view, $this->postsRepository, $this->session, $this->request, $this->validator);
+                return $addPostController->displayPage();
+            }
         }
 
         $errorController = new ErrorPageController($this->view);

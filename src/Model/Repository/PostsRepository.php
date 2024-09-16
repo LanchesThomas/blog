@@ -7,10 +7,11 @@ namespace App\Model\Repository;
 use App\Model\Entity\User;
 use App\Model\Entity\Post;
 use App\Service\ConnectDB;
+use App\Service\Session;
 
 final readonly class PostsRepository
 {
-    public function __construct()
+    public function __construct(private Session $session)
     {
     }
 
@@ -18,7 +19,7 @@ final readonly class PostsRepository
     {
         $req = ConnectDB::getPDO()->prepare('
             SELECT posts.id, posts.title, posts.content, posts.createdAt, posts.chapo,
-                   posts.updatedAt, users.pseudo 
+                   posts.updatedAt, users.pseudo
             FROM posts
             INNER JOIN users ON posts.user_id = users.id
         ');
@@ -34,7 +35,8 @@ final readonly class PostsRepository
                 createdAt: $data['createdAt'],
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
-                pseudo: $data['pseudo']
+                pseudo: $data['pseudo'],
+                userId: $data['id']
             );
         }
 
@@ -68,7 +70,8 @@ final readonly class PostsRepository
                 createdAt: $data['createdAt'],
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
-                pseudo: $data['pseudo']
+                pseudo: $data['pseudo'],
+                userId: $data['id']
             );
     }
 
@@ -110,7 +113,8 @@ final readonly class PostsRepository
                 createdAt: $data['createdAt'],
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
-                pseudo: $data['pseudo']
+                pseudo: $data['pseudo'],
+                userId: $data['id']
             );
     }
 
@@ -188,17 +192,43 @@ final readonly class PostsRepository
                 createdAt: $data['createdAt'],
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
-                pseudo: $data['pseudo']
+                pseudo: $data['pseudo'],
+                userId: $data['id']
             );
         }
 
             return $posts;
     }
 
-    // public function create(Post $post): bool
-    // {
-    // //insertion d'un user dans la BDD
-    // }
+    public function create($title, $chapo, $content): void
+    {
+        $createdAt = (new \DateTime())->format('Y-m-d H:i:s');
+        $newPost = new Post(
+            id: null,
+            title: $title,
+            content: $content,
+            createdAt: $createdAt,
+            chapo: $chapo,
+            updatedAt: $createdAt,
+            pseudo: $this->session->getUser()['pseudo'],
+            userId: $this->session->getUser()['userId']
+        );
+
+        $sql = '
+        INSERT INTO posts (title, chapo, content, createdAt, updatedAt, user_id)
+        VALUES (:title, :chapo, :content, :createdAt, :updatedAt, :user_id)
+        ';
+
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+        $stmt->bindValue(':title', $newPost->getTitle(), \PDO::PARAM_STR);
+        $stmt->bindValue(':chapo', $newPost->getChapo(), \PDO::PARAM_STR);
+        $stmt->bindValue(':content', $newPost->getContent(), \PDO::PARAM_STR);
+        $stmt->bindValue(':createdAt', $newPost->getCreatedAt(), \PDO::PARAM_STR);
+        $stmt->bindValue(':updatedAt', $newPost->getUpdatedAt(), \PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $newPost->getUserId(), \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 
     // public function update(Post $post): bool
     // {

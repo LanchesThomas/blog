@@ -50,6 +50,6 @@ final class InscriptionController
             }
         }
 
-        return $this->view->render(['template' => 'inscription', 'data' => []]);
+        return $this->view->render(['office' => 'front', 'template' => 'inscription', 'data' => []]);
     }
 }
