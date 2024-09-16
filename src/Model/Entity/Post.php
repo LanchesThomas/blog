@@ -7,13 +7,14 @@ namespace App\Model\Entity;
 final class Post
 {
     public function __construct(
-        private readonly int $id,
+        private readonly ?int $id,
         private string $title,
         private string $content,
         private string $createdAt,
         private string $chapo,
         private string $updatedAt,
-        private string $pseudo
+        private string $pseudo,
+        private int $userId
     ) {
     }
 
@@ -80,5 +81,10 @@ final class Post
     public function setPseudo(string $pseudo): void
     {
         $this->pseudo = $pseudo;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
     }
 }

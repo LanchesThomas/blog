@@ -24,6 +24,10 @@ final class View
         $data['data']['flashes'] = $this->session->getFlashes();
         $data['data']['user'] = $this->session->getUser();
 
-        return $this->twig->render("frontoffice/{$data['template']}.html.twig", $data['data']);
+        if ($data['template'] === 'admin') {
+            return $this->twig->render("{$data['office']}office/{$data['template']}.html.twig", $data['data']);
+        } else {
+            return $this->twig->render("{$data['office']}office/{$data['template']}.html.twig", $data['data']);
+        }
     }
 }

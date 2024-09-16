@@ -40,7 +40,7 @@ final class HomeController
                 );
                 $destination = 'lanches.thomas@gmail.com';
 
-                $content = $this->view->render(['template' => 'email', 'data' => ['content' => $content]]);
+                $content = $this->view->render(['office' => 'front',  'template' => 'email', 'data' => ['content' => $content]]);
                 $emailSent = $this->mailer->sendMessage($subject, $content, $destination);
 
                 if ($emailSent) {
@@ -60,7 +60,7 @@ final class HomeController
             }
         }
 
-            return $this->view->render(['template' => 'home', 'data' => [
+            return $this->view->render(['office' => 'front',  'template' => 'home', 'data' => [
                     'oldInputs' => $oldInputs
                 ]]);
     }

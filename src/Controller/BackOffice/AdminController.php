@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\FrontOffice;
+namespace App\Controller\BackOffice;
 
 use App\View\View;
 use App\Model\Repository\PostsRepository;
 
-final class BlogController
+final class AdminController
 {
     public function __construct(private View $view, private PostsRepository $postsRepository)
     {
@@ -16,7 +16,8 @@ final class BlogController
     public function displayPage(): string
     {
         $posts = $this->postsRepository->findAll();
-            return $this->view->render(['office' => 'front','template' => 'blog', 'data' => [
+
+            return $this->view->render(['office' => 'back','template' => 'admin', 'data' => [
                 'listPosts' => $posts
             ]]);
     }

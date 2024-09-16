@@ -17,6 +17,6 @@ final class ErrorPageController
 
            // $twig = $this->view->render();
             // echo $twig->render('frontoffice/homepage.html.twig', ['name' => 'Fabien']);
-            return $this->view->render(['template' => 'error', 'data' => []]);
+            return $this->view->render(['office' => 'front', 'template' => 'error', 'data' => []]);
     }
 }

@@ -18,6 +18,9 @@
             <a href="?action=logout" class="text-white font-bold"> Déconnexion </a>
         {% endif %}
     </div>
+    {% if user %}
+        {% include 'backoffice/navbar.html.twig' %}
+    {% endif %}
 </div>
 
 <script>
@@ -67,5 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
             <a href="/?action=connexion">Connexion</a>
             <a href="/?action=inscription">Inscription</a>
         </nav>
+        {% if user %}
+            {% include 'backoffice/navbar.html.twig' %}
+        {% endif %}
     </div>
 </div>

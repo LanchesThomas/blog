@@ -43,7 +43,7 @@ final class PostController
          // Récupérer le nombre total de commentaires
         $totalComments = count($this->commentsRepository->findBy(['post_id' => $this->postId]));
 
-            return $this->view->render(['template' => 'post', 'data' => [
+            return $this->view->render(['office' => 'front', 'template' => 'post', 'data' => [
                 'post' => $post, 'comments' => $comments, 'totalComments' => $totalComments
             ]]);
     }

@@ -35,4 +35,25 @@ class Validator
         $strippedMessage = strip_tags($message);
         return !empty($strippedMessage) && $strippedMessage === $message;
     }
+
+    public function titleIsValid(string $title): bool
+    {
+        // Vérifie que le message n'est pas vide et qu'il ne contient pas de balises HTML
+        $strippedMessage = strip_tags($title);
+        return !empty($strippedMessage) && $strippedMessage === $title;
+    }
+
+    public function chapoIsValid(string $chapo): bool
+    {
+        // Vérifie que le message n'est pas vide et qu'il ne contient pas de balises HTML
+        $strippedMessage = strip_tags($chapo);
+        return !empty($strippedMessage) && $strippedMessage === $chapo;
+    }
+
+    public function contentIsValid(string $content): bool
+    {
+        // Vérifie que le message n'est pas vide et qu'il ne contient pas de balises HTML
+        $strippedMessage = strip_tags($content);
+        return !empty($strippedMessage) && $strippedMessage === $content;
+    }
 }

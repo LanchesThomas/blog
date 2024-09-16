@@ -24,9 +24,10 @@ final class ConnexionController
             try {
                 $user = $this->userRepository->findOneBy(['mail' => $mail, 'password' => $password]);
                 $pseudo = $user->getPseudo();
+                $userId = $user->getId();
 
                 if ($user !== null) {
-                    $this->session->setUser(['email' => $mail, 'pseudo' => $pseudo ]);
+                    $this->session->setUser(['email' => $mail, 'pseudo' => $pseudo, 'userId' => $userId ]);
                     $redirect = new \App\Service\RedirectResponse('?action=home');
                     $redirect->send();
                 } else {
@@ -37,6 +38,6 @@ final class ConnexionController
             }
         }
 
-        return $this->view->render(['template' => 'connexion', 'data' => []]);
+        return $this->view->render(['office' => 'front', 'template' => 'connexion', 'data' => []]);
     }
 }
