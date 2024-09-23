@@ -1,0 +1,80 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+
+{% block header %}
+<section class="mt-14 mx-auto bg-[url('assets/banner.avif')] h-96 relative p-4">
+    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>  
+    <div class="container mx-auto flex justify-center items-center flex-col h-full relative text-center ">
+        <h1 class="font-bold text-white uppercase" style="font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);">Gestion des utilisateurs</h1>
+    </div>
+</section>
+{% endblock %}
+{% block main %}
+{% include 'frontoffice/flash.html.twig' %}
+<div class="container mx-auto flex flex-col my-16 gap-4">
+            {% if users|length == 1 %}
+            <div class="h-64 bg-cyan-600 flex justify-center items-center text-white font-bold text-lg uppercase">
+                <p>Aucun utilisateur</p>
+            </div>
+            {% endif %} 
+            {% if user %}
+                {% for user in users %}
+                        {% if user.id != 1 %}
+                            <div class="bg-cyan-950 p-4 rounded-md flex flex-col gap-4 text-white">
+                                <p> Utilisateur n°{{ loop.index }}</p>
+                                <div class="flex flex-col border border-white rounded-md">
+                                    <div class="flex gap-4">
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p class="font-bold">ID</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p class="font-bold">PSEUDO</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p class="font-bold">MAIL</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center">
+                                            <p class="font-bold">ROLE</p>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-[1px] bg-white"></div>
+                                    <div class="flex gap-4">
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p>{{user.id}}</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p>{{user.pseudo}}</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center border-r border-white">
+                                            <p>{{user.mail}}</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/4 p-4 items-center">
+                                            <p>{{user.role}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="self-end flex gap-4">
+                                    {% if user.role is same as "admin" %} 
+                                        <a href="?action=changeRole&userId={{user.id}}&role=admin" class="mt-auto p-2 rounded-md bg-cyan-600 text-white">Passer en rôle : Editeur</a>
+                                    {% endif %}
+                                    {% if user.role is same as "editor" %}
+                                        <a href="?action=changeRole&userId={{user.id}}&role=editor" class="mt-auto p-2 rounded-md bg-cyan-600 text-white">Passer en rôle : Admin</a>
+                                    {% endif %} 
+                                        <a href="?action=deleteUser&userId={{user.id}}" class="mt-auto p-2 rounded-md bg-red-500 text-white">Supprimer</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                
+                {% endfor %}
+            {% endif %}
+</div>
+{% endblock %}

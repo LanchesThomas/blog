@@ -15,7 +15,7 @@ final readonly class UserRepository
 
     public function findAll(): array
     {
-        $req = ConnectDB::getPDO()->prepare('SELECT * FROM `user`');
+        $req = ConnectDB::getPDO()->prepare('SELECT * FROM users');
         $req->execute();
         $results = $req->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -24,7 +24,7 @@ final readonly class UserRepository
             $users[] = new User(
                 id: (int)$data['id'],
                 pseudo: $data['pseudo'],
-                mail: $data['email'],
+                mail: $data['mail'],
                 password: $data['password'],
                 role: $data['role']
             );
@@ -170,7 +170,7 @@ final readonly class UserRepository
             mail: $mail,
             pseudo: $pseudo,
             password: $password,
-            role: 'admin'
+            role: 'editor'
         );
 
         $sql = '
@@ -179,7 +179,7 @@ final readonly class UserRepository
         ';
 
         $stmt = ConnectDB::getPDO()->prepare($sql);
-        $stmt->bindValue(':mail', $newUser->getEmail(), \PDO::PARAM_STR);
+        $stmt->bindValue(':mail', $newUser->getMail(), \PDO::PARAM_STR);
         $stmt->bindValue(':pseudo', $newUser->getPseudo(), \PDO::PARAM_STR);
         $stmt->bindValue(':password', $newUser->getPassword(), \PDO::PARAM_STR);
         $stmt->bindValue(':role', $newUser->getRole(), \PDO::PARAM_STR);
@@ -187,13 +187,33 @@ final readonly class UserRepository
         $stmt->execute();
     }
 
-    // public function update(User $user): bool
-    // {
-    // //modification d'un user dans la BDD
-    // }
+    public function update(int $id, string $role): void
+    {
+        $sql = '
+        UPDATE users
+        SET role = :role
+        WHERE id = :id
+        ';
 
-    // public function delete(User $user): bool
-    // {
-    // //supprime user dans la BDD
-    // }
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':role', $role, \PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
+
+    public function delete(int $id): void
+    {
+        $sql = '
+        DELETE FROM users
+        WHERE id = :id
+        ';
+
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 }

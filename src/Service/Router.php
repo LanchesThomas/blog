@@ -6,6 +6,9 @@ namespace App\Service;
 
 use App\Controller\BackOffice\AddPostController;
 use App\Controller\BackOffice\AdminController;
+use App\Controller\BackOffice\UserAdminController;
+use App\Controller\BackOffice\ChangeRoleController;
+use App\Controller\BackOffice\DeleteUser;
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
 use App\Controller\FrontOffice\ErrorPageController;
@@ -70,14 +73,25 @@ final class Router
         } elseif ($action === 'logout') {
             $logOutController = new LogOutController($this->session);
             return $logOutController->logOut();
-        } elseif ($this->session->isAuthenticated()) {
+        } elseif ($action === 'admin' && !$this->session->isAuthenticated()) {
+            $connnexionController = new ConnexionController($this->view, $this ->request, $this->userRepository, $this->session);
+            return $connnexionController->displayPage();
+        } elseif ($this->session->isAuthenticated() && $this->session->getUser()['userRole'] === 'admin') {
             if ($action === 'admin') {
                 $adminController = new AdminController($this->view, $this->postsRepository);
                 return $adminController->displayPage();
-            }
-            if ($action === 'addPost') {
+            } elseif ($action === 'addPost') {
                 $addPostController = new AddPostController($this->view, $this->postsRepository, $this->session, $this->request, $this->validator);
                 return $addPostController->displayPage();
+            } elseif ($action === 'userAdmin') {
+                $userAdminController = new UserAdminController($this->view, $this->userRepository, $this->session, $this->request, $this->validator);
+                return $userAdminController->displayPage();
+            } elseif ($action === "changeRole") {
+                $changeRoleController = new ChangeRoleController($this->userRepository, $this->request, $this->session);
+                return $changeRoleController->ChangeRole();
+            } elseif ($action === "deleteUser") {
+                $deleteUser = new DeleteUser($this->userRepository, $this->request, $this->session);
+                return $deleteUser->DeleteUser();
             }
         }
 

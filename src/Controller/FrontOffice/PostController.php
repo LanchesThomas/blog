@@ -35,16 +35,25 @@ final class PostController
 
         $limit  = 3;
 
-        if ($this->request->queryAction('c') === '1') {
-            $limit = null;
+        if ($this->request->queryAction('c')) {
+            $limit = $this->request->queryAction('c') + 3;
         }
 
-        $comments = $this->commentsRepository->findBy(['post_id' => $this->postId], ['createdAt' => 'DESC'], $limit);
-         // Récupérer le nombre total de commentaires
-        $totalComments = count($this->commentsRepository->findBy(['post_id' => $this->postId]));
 
+
+        $comments = $this->commentsRepository->findBy(['post_id' => $this->postId], ['createdAt' => 'DESC'], $limit);
+
+        $is_comments   = $this->commentsRepository->findBy(['post_id' => $this->postId]) != null;
+        if ($is_comments) {
+            $totalComments = count($this->commentsRepository->findBy(['post_id' => $this->postId]));
+
+                return $this->view->render(['office' => 'front', 'template' => 'post', 'data' => [
+                    'post' => $post, 'comments' => $comments, 'totalComments' => $totalComments, 'limit' => $limit
+                ]]);
+        } else {
             return $this->view->render(['office' => 'front', 'template' => 'post', 'data' => [
-                'post' => $post, 'comments' => $comments, 'totalComments' => $totalComments
+                'post' => $post
             ]]);
+        }
     }
 }

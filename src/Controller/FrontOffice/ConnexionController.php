@@ -23,11 +23,13 @@ final class ConnexionController
 
             try {
                 $user = $this->userRepository->findOneBy(['mail' => $mail, 'password' => $password]);
-                $pseudo = $user->getPseudo();
-                $userId = $user->getId();
+
 
                 if ($user !== null) {
-                    $this->session->setUser(['email' => $mail, 'pseudo' => $pseudo, 'userId' => $userId ]);
+                    $pseudo = $user->getPseudo();
+                    $userId = $user->getId();
+                    $userRole = $user->getRole();
+                    $this->session->setUser(['email' => $mail, 'pseudo' => $pseudo, 'userId' => $userId, 'userRole' => $userRole ]);
                     $redirect = new \App\Service\RedirectResponse('?action=home');
                     $redirect->send();
                 } else {
