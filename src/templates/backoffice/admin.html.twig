@@ -12,6 +12,7 @@
 </section>
 {% endblock %}
 {% block main %}
+{% include 'frontoffice/flash.html.twig' %}
 <div class="container mx-auto grid grid-cols-3 my-16 gap-4">
     {% for post in listPosts %}
                     <div class="flex flex-col gap-4 border border-cyan-900 rounded-md p-4">

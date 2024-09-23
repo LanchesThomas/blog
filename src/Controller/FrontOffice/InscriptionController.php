@@ -41,11 +41,11 @@ final class InscriptionController
                     $redirect = new \App\Service\RedirectResponse('?action=connexion');
                     $redirect->send();
                 } catch (\PDOException $e) {
-                     // if ($e->getCode() == 23000) {
+                    if ($e->getCode() == 23000) {
                         $this->session->addFlashes('error', 'Ce pseudo ou cet email est déjà utilisé.');
-                    // } else {
-                    //     $this->session->addFlashes('error', 'Une erreur est survenue. Veuillez réessayer.');
-                    // }
+                    } else {
+                        $this->session->addFlashes('error', 'Une erreur est survenue. Veuillez réessayer.');
+                    }
                 }
             }
         }
