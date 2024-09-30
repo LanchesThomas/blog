@@ -8,6 +8,7 @@ use App\Controller\BackOffice\AddPostController;
 use App\Controller\BackOffice\AdminController;
 use App\Controller\BackOffice\UserAdminController;
 use App\Controller\BackOffice\ChangeRoleController;
+use App\Controller\BackOffice\CommentAdminController;
 use App\Controller\BackOffice\DeleteUser;
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
@@ -59,7 +60,7 @@ final class Router
             return $homeController->displayPage();
         } elseif ($action === 'blog') {
             if (isset($post) && $post) {
-                $postController = new PostController($this->view, $this->postsRepository, $post, $this->request, $this->commentsRepository, $this->session);
+                $postController = new PostController($this->view, $this->postsRepository, $post, $this->request, $this->commentsRepository, $this->session, $this->userRepository);
                 return $postController->displayPage();
             }
             $blogController = new BlogController($this->view, $this->postsRepository);
@@ -92,6 +93,9 @@ final class Router
             } elseif ($action === "deleteUser") {
                 $deleteUser = new DeleteUser($this->userRepository, $this->request, $this->session);
                 return $deleteUser->DeleteUser();
+            } elseif ($action === 'commentAdmin' || $action === 'allComments' || $action === 'validComments' || $action === 'commentToValid' ||  $action === 'validateComment' || $action === 'invalidateComment' || $action === 'deleteComment') {
+                $commentAdminController = new CommentAdminController($this->view, $this->commentsRepository, $this->session, $this->request, $this->validator);
+                return $commentAdminController->displayPage();
             }
         }
 

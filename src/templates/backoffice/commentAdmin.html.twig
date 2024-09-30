@@ -1,0 +1,122 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Gestion des commentaires{% endblock %}
+
+
+{% block header %}
+<section class="mt-14 mx-auto bg-[url('assets/banner.avif')] h-96 relative p-4">
+    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>  
+    <div class="container mx-auto flex justify-center items-center flex-col h-full relative text-center ">
+        <h1 class="font-bold text-white uppercase" style="font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);">Gestion des commentaires</h1>
+    </div>
+</section>
+{% endblock %}
+{% block main %}
+    <div class="bg-cyan-600 w-full z-10">
+    <div class="flex justify-center p-4 container mx-auto ">
+        <nav class="flex justify-center gap-16 text-white font-bold">
+            <a href="?action=commentAdmin&list=allComments">Tous les commentaires</a>
+            <a href="?action=commentAdmin&list=commentToValid">Commentaires à valider</a>
+            <a href="?action=commentAdmin&list=validComments">Commentaires validés</a>
+            <a href="?action=commentAdmin&list=invalidComments">Commentaires invalidés</a>
+        </nav>
+    </div>
+</div>
+{% include 'frontoffice/flash.html.twig' %}
+<div class="container mx-auto flex flex-col my-16 gap-4">
+
+                {% if list %}
+                    <h2 class="text-center text-xl font-bold uppercase">
+                    {% if list == "allComments" %}
+                        Tous les commentaires</h2>
+                    {% endif %}
+                    {% if list == "commentToValid" %}
+                        Commentaires à valider</h2>
+                    {% endif %}
+                    {% if list == "validComments" %}
+                        Commentaires validés</h2>
+                    {% endif %}
+                    {% if list == "invalidComments" %}
+                        Commentaires invalidés</h2>
+                    {% endif %}
+                {% endif %}
+
+                {% if comments|length == 0 %}
+                    <div class="h-64 bg-cyan-600 flex justify-center items-center text-white font-bold text-lg uppercase">
+                        <p>Aucun commentaire</p>
+                    </div>            
+                {% endif %} 
+               
+            {% if comments %}
+                {% for comment in comments %}
+                            <div class="bg-cyan-950 p-4 rounded-md flex flex-col gap-4 text-white">
+                            <div class="flex justify-between">
+                                <p> commentaire de {{ comment.pseudo }}</p>
+                                {% if comment.statut == "waiting" %}
+                                    <p class="p-2 rounded-md text-black bg-yellow-200">
+                                        En attente
+                                    </p>
+                                {% endif %}
+                                {% if comment.statut == "valid" %}
+                                    <p class="p-2 rounded-md text-black bg-green-200">
+                                        Validé
+                                    </p>
+                                {% endif %}
+                                {% if comment.statut == "delete" %}
+                                    <p class="p-2 rounded-md text-black bg-red-200">
+                                        Supprimé
+                                    </p>
+                                {% endif %}
+                            </div>
+                                <div class="flex flex-col border border-white rounded-md">
+                                    <div class="flex text-cyan-600">
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 items-center border-r border-white">
+                                            <p class="font-bold">DATE</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 items-center border-r border-white">
+                                            <p class="font-bold">PSEUDO</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 items-center">
+                                            <p class="font-bold">MAIL</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-[1px] bg-white"></div>
+                                    <div class="flex">
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 items-center border-r border-b border-white">
+                                            <p>Le {{comment.createdAt|date('d/m/Y')}} à {{comment.createdAt|date('H:i', "Europe/Paris")}}</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 items-center border-r border-b border-white">
+                                            <p>{{comment.pseudo}}</p>
+                                            
+                                        </div>
+                                        <div class="flex flex-col gap-2 w-1/3 p-4 border-b border-white items-center ">
+                                            <p>{{user.email}}</p>
+                                            
+                                        </div>
+                                    </div>
+                                    <p class="flex justify-center items-center p-4 text-cyan-600 font-bold">CONTENU</p>
+                                    <div class=" p-4 flex justify-center items-center border-t border-white">
+                                        <p> {{comment.content }} </p>
+                                    </div>  
+                                </div>
+                                <div class="self-end flex gap-4">
+                                        {% if comment.statut != 'delete' %}
+                                            <a href="?action=invalidateComment&commentId={{comment.id}}&list={{list}}" class="mt-auto p-2 rounded-md bg-red-500 text-white">Supprimer</a>
+                                        {% endif %}
+                                        {% if comment.statut == 'waiting' or comment.statut == 'delete' %}
+                                            <a href="?action=validateComment&commentId={{comment.id}}&list={{list}}" class="mt-auto p-2 rounded-md bg-green-500 text-white">Valider</a>
+                                        {% endif %}
+                                        {% if list == 'invalidComments' and comment.statut == 'delete' %}
+                                            <a href="?action=deleteComment&commentId={{comment.id}}&list={{list}}" class="mt-auto p-2 rounded-md bg-red-500 text-white">Supprimer définitivement</a>
+                                        {% endif %}
+                                </div>
+
+                                 
+                            </div>
+                {% endfor %}
+            {% endif %}
+</div>
+{% endblock %}

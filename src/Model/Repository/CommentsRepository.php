@@ -22,8 +22,9 @@ final readonly class CommentsRepository
                 comments.statut, 
                 comments.createdAt, 
                 comments.content, 
-                posts.title AS post_title, 
-                users.pseudo AS user_pseudo 
+                posts.id AS post_id,
+                users.pseudo AS user_pseudo,
+                users.id AS userId
             FROM 
                 comments
             INNER JOIN 
@@ -43,8 +44,9 @@ final readonly class CommentsRepository
                 statut: $data['statut'],
                 createdAt: $data['createdAt'],
                 content: $data['content'],
-                post: $data['post_title'],
-                pseudo: $data['user_pseudo']
+                post: $data['post_id'],
+                pseudo: $data['user_pseudo'],
+                userId : (int)$data['userId']
             );
         }
 
@@ -92,7 +94,8 @@ final readonly class CommentsRepository
             createdAt: $data['createdAt'],
             content: $data['content'],
             post: $data['post_title'],
-            pseudo: $data['user_pseudo']
+            pseudo: $data['user_pseudo'],
+            userId : (int)$data['userId']
         );
     }
 
@@ -148,7 +151,8 @@ final readonly class CommentsRepository
             createdAt: $data['createdAt'],  // Assurez-vous que le nom de la colonne correspond
             content: $data['content'],
             post: $data['post_id'],
-            pseudo: $data['user_pseudo']
+            pseudo: $data['user_pseudo'],
+            userId : (int)$data['userId']
         );
     }
 
@@ -167,11 +171,12 @@ final readonly class CommentsRepository
         $sql = "
             SELECT 
                 comments.id, 
-                comments.statut, 
+                comments.statut,  
                 comments.createdAt, 
                 comments.content, 
                 posts.id AS post_id, 
-                users.pseudo AS user_pseudo 
+                users.pseudo AS user_pseudo,
+                users.id AS userId 
             FROM 
                 comments
             INNER JOIN 
@@ -226,16 +231,16 @@ final readonly class CommentsRepository
             return null;
         }
 
-        // Création d'un tableau d'objets Comments à partir des résultats
         $comments = [];
         foreach ($results as $data) {
             $comments[] = new Comments(
                 id: (int)$data['id'],
                 statut: $data['statut'],
-                createdAt: $data['createdAt'],  // Assurez-vous que le nom de la colonne correspond
+                createdAt: $data['createdAt'],
                 content: $data['content'],
                 post: $data['post_id'],
-                pseudo: $data['user_pseudo']       // Nom du post récupéré par la jointure
+                pseudo: $data['user_pseudo'],
+                userId : (int)$data['userId']
             );
         }
 
@@ -244,19 +249,19 @@ final readonly class CommentsRepository
 
 
 
-    public function create(Post $post, string $comments): void
+    public function create(Post $post, string $comments, int $userId, string $pseudo): void
     {
         $postId = $post->getId();
-        $statut = 1;
         $createdAt = (new \DateTime())->format('Y-m-d H:i:s');
 
         $newComment = new Comments(
             id: null,
-            statut: $statut,
+            statut: 'waiting',
             createdAt: $createdAt,
             content: $comments,
             post: $postId,
-            pseudo: null
+            pseudo: $pseudo,
+            userId : $userId
         );
 
         $sql = '
@@ -266,22 +271,42 @@ final readonly class CommentsRepository
 
         $stmt = ConnectDB::getPDO()->prepare($sql);
 
-        $stmt->bindValue(':statut', $newComment->getStatut(), \PDO::PARAM_INT);
+        $stmt->bindValue(':statut', $newComment->getStatut(), \PDO::PARAM_STR);
         $stmt->bindValue(':createdAt', $newComment->getCreatedAt(), \PDO::PARAM_STR);
         $stmt->bindValue(':content', $newComment->getContent(), \PDO::PARAM_STR);
         $stmt->bindValue(':post_id', $newComment->getPost(), \PDO::PARAM_INT);
-        $stmt->bindValue(':user_id', 1);
+        $stmt->bindValue(':user_id', $newComment->getUserId(), \PDO::PARAM_INT);
 
         $stmt->execute();
     }
 
-    // public function update(User $user): bool
-    // {
-    // //modification d'un user dans la BDD
-    // }
+    public function update(int $id, string $statut): void
+    {
+        $sql = '
+        UPDATE comments
+        SET statut = :statut
+        WHERE id = :id
+        ';
 
-    // public function delete(User $user): bool
-    // {
-    // //supprime user dans la BDD
-    // }
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':statut', $statut, \PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
+
+    public function delete(int $id): void
+    {
+        $sql = '
+        DELETE FROM comments
+        WHERE id = :id
+        ';
+
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 }
