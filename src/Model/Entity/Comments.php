@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 
 final class Comments
 {
-    public function __construct(private readonly ?int $id, private int $statut, private string $createdAt, private string $content, private int $post, private ?string $pseudo)
+    public function __construct(private readonly ?int $id, private string $statut, private string $createdAt, private string $content, private int $post, private int $userId, private ?string $pseudo)
     {
     }
 
@@ -15,12 +15,12 @@ final class Comments
         return $this->id;
     }
 
-    public function getStatut(): int
+    public function getStatut(): string
     {
         return $this->statut;
     }
 
-    public function setStatut(int $statut): void
+    public function setStatut(string $statut): void
     {
         $this->statut = $statut;
     }
@@ -62,5 +62,15 @@ final class Comments
     public function setPseudo(string $pseudo): void
     {
         $this->post = $pseudo;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(int $userId): void
+    {
+        $this->post = $userId;
     }
 }
