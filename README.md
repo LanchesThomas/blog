@@ -8,6 +8,10 @@
 ```shell
 git clone https://github.com/LanchesThomas/blog.git
 ```
+- Accéder au dossier : 
+```shell
+cd blog
+```
 - Installer les dépendances : 
 ```shell
 composer install
@@ -34,6 +38,14 @@ class ConnectDB
 ```
 - Importez simplement le fichier `blog.sql`, présent à la racine du projet, dans votre base de données SQL locale. Si toutes les informations ont correctement été renseignées, la connexion devrait se faire automatiquement.
 
+- Pour tester les fonctionnalités du site : 
+    - Admin : 
+        - ID : admin@mail.com
+        - MDP : 123456
+    - Editor : 
+        - ID : editor@mail.com
+        - MDP : 123456
+
 ## Lancement :
 
 - Lancer les serveurs PHP : 
@@ -41,3 +53,11 @@ class ConnectDB
 PHP -S localhost:8000 -t public
 ```
 - Aller à l'adresse : `http://localhost:8000/`
+
+## Lancement serveur de mail
+
+Pour lancer le serveur de mail local [MailHOg](https://github.com/mailhog/MailHog) :
+-Éxécuter la commande
+```shell
+php src/service/mailhog/download_mailhog.php
+``` 
