@@ -20,7 +20,10 @@
                         </div>
                         <div class="flex flex-col h-1/2 justify-between">
                             <p> {{ post.chapo }} </p>
-                            <p class=""> {{ post.pseudo }} {{ post.createdAt|date('d/m/Y') }}               
+                            <div class="flex justify-between">
+                                <p> {{ post.pseudo }} </p>
+                                <p>{{ post.createdAt|date('d/m/Y') }}</p>               
+                            </div>
                         </div>
                     </a>
             {% endfor %}
