@@ -19,7 +19,7 @@ final readonly class PostsRepository
     {
         $req = ConnectDB::getPDO()->prepare('
             SELECT posts.id, posts.title, posts.content, posts.createdAt, posts.chapo,
-                   posts.updatedAt, users.pseudo
+                   posts.updatedAt, posts.statut, users.pseudo
             FROM posts
             INNER JOIN users ON posts.user_id = users.id
         ');
@@ -36,7 +36,8 @@ final readonly class PostsRepository
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
                 pseudo: $data['pseudo'],
-                userId: $data['id']
+                userId: $data['id'],
+                statut: $data['statut']
             );
         }
 
@@ -50,7 +51,7 @@ final readonly class PostsRepository
     {
             $req = ConnectDB::getPDO()->prepare(
                 'SELECT posts.id, posts.title, posts.content, posts.createdAt, posts.chapo,
-                posts.updatedAt, users.pseudo 
+                posts.updatedAt, posts.statut, users.pseudo 
                 FROM posts 
                 INNER JOIN users ON posts.user_id = users.id 
                 WHERE posts.id = :id'
@@ -71,7 +72,8 @@ final readonly class PostsRepository
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
                 pseudo: $data['pseudo'],
-                userId: $data['id']
+                userId: $data['id'],
+                statut: $data['statut']
             );
     }
 
@@ -88,7 +90,7 @@ final readonly class PostsRepository
 
             $req = ConnectDB::getPDO()->prepare(
                 "SELECT posts.id, posts.title, posts.content, posts.createdAt, posts.chapo,
-                posts.updatedAt, users.pseudo 
+                posts.updatedAt, posts.statut, users.pseudo 
                 FROM posts 
                 INNER JOIN users ON posts.user_id = users.id
                 WHERE $queryString"
@@ -114,7 +116,8 @@ final readonly class PostsRepository
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
                 pseudo: $data['pseudo'],
-                userId: $data['id']
+                userId: $data['id'],
+                statut: $data['statut']
             );
     }
 
@@ -132,7 +135,7 @@ final readonly class PostsRepository
 
             // Construction de la requête SQL
             $sql = "SELECT posts.id, posts.title, posts.content, posts.createdAt, posts.chapo,
-                    posts.updatedAt, users.pseudo 
+                    posts.updatedAt, posts.statut, users.pseudo 
                     FROM posts 
                     INNER JOIN users ON posts.user_id = users.id";
 
@@ -193,7 +196,8 @@ final readonly class PostsRepository
                 chapo: $data['chapo'],
                 updatedAt: $data['updatedAt'],
                 pseudo: $data['pseudo'],
-                userId: $data['id']
+                userId: $data['id'],
+                statut: $data['statut']
             );
         }
 
@@ -211,12 +215,13 @@ final readonly class PostsRepository
             chapo: $chapo,
             updatedAt: $createdAt,
             pseudo: $this->session->getUser()['pseudo'],
-            userId: $this->session->getUser()['userId']
+            userId: $this->session->getUser()['userId'],
+            statut: 'published'
         );
 
         $sql = '
-        INSERT INTO posts (title, chapo, content, createdAt, updatedAt, user_id)
-        VALUES (:title, :chapo, :content, :createdAt, :updatedAt, :user_id)
+        INSERT INTO posts (title, chapo, content, createdAt, updatedAt, statut, user_id)
+        VALUES (:title, :chapo, :content, :createdAt, :updatedAt, :statut, :user_id)
         ';
 
         $stmt = ConnectDB::getPDO()->prepare($sql);
@@ -225,18 +230,81 @@ final readonly class PostsRepository
         $stmt->bindValue(':content', $newPost->getContent(), \PDO::PARAM_STR);
         $stmt->bindValue(':createdAt', $newPost->getCreatedAt(), \PDO::PARAM_STR);
         $stmt->bindValue(':updatedAt', $newPost->getUpdatedAt(), \PDO::PARAM_STR);
+        $stmt->bindValue(':statut', $newPost->getStatut(), \PDO::PARAM_STR);
         $stmt->bindValue(':user_id', $newPost->getUserId(), \PDO::PARAM_INT);
 
         $stmt->execute();
     }
 
-    // public function update(Post $post): bool
-    // {
-    // //modification d'un user dans la BDD
-    // }
+    public function update(?int $id, ?string $statut = null, ?string $title = null, ?string $chapo = null, ?string $content = null, ?int $userId = null): void
+    {
+        $fields = [];
 
-    // public function delete(User $user): bool
-    // {
-    // //supprime user dans la BDD
-    // }
+        if ($statut !== null) {
+            $fields[] = 'statut = :statut';
+        }
+        if ($title !== null) {
+            $fields[] = 'title = :title';
+        }
+        if ($chapo !== null) {
+            $fields[] = 'chapo = :chapo';
+        }
+        if ($content !== null) {
+            $fields[] = 'content = :content';
+        }
+        if ($userId !== null) {
+            $fields[] = 'user_id = :user_id';
+        }
+
+    // Si aucun champ à mettre à jour, on quitte la fonction
+        if (empty($fields)) {
+            return;
+        }
+
+    // Construction de la requête SQL dynamique
+        $sql = 'UPDATE posts SET ' . implode(', ', $fields) . ' WHERE id = :id';
+
+    // Préparation de la requête
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+    // Liaison des valeurs pour les champs non null
+        if ($statut !== null) {
+            $stmt->bindValue(':statut', $statut, \PDO::PARAM_STR);
+        }
+        if ($title !== null) {
+            $stmt->bindValue(':title', $title, \PDO::PARAM_STR);
+        }
+        if ($chapo !== null) {
+            $stmt->bindValue(':chapo', $chapo, \PDO::PARAM_STR);
+        }
+        if ($content !== null) {
+            $stmt->bindValue(':content', $content, \PDO::PARAM_STR);
+        }
+        if ($userId !== null) {
+            $stmt->bindValue(':user_id', $userId, \PDO::PARAM_STR);
+        }
+
+    // Liaison de l'ID
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+    // Exécution de la requête
+        $stmt->execute();
+    }
+
+
+
+
+    public function delete(int $id): void
+    {
+        $sql = '
+        DELETE FROM posts
+        WHERE id = :id
+        ';
+
+        $stmt = ConnectDB::getPDO()->prepare($sql);
+
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $stmt->execute();
+    }
 }

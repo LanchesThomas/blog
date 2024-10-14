@@ -27,10 +27,6 @@ final class Session
             'type' => $type,
             'message' => $message,
         ];
-        // echo '<pre>';
-        //     var_dump($_SESSION['flashes']);
-        // echo '</pre>';
-        // die;
     }
 
     public function getFlashes(): array
@@ -58,10 +54,6 @@ final class Session
     public function setUser(array $userData): void
     {
         $_SESSION['user'] = $userData;
-        // echo '<pre>';
-        //     var_dump($_SESSION['user']);
-        // echo '</pre>';
-        // die;
     }
 
     public function getUser(): ?array

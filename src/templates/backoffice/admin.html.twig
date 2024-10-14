@@ -12,24 +12,82 @@
 </section>
 {% endblock %}
 {% block main %}
+<div class="bg-cyan-600 w-full z-10">
+    <div class="flex justify-center p-4 container mx-auto">
+        <nav class="flex justify-center gap-16 text-white font-bold">
+            <a href="?action=admin&list=all">Tous les articles</a>
+            <a href="?action=admin&list=published">Publiés</a>
+            <a href="?action=admin&list=draft">Brouillon</a>
+        </nav>
+    </div>
+</div>
 {% include 'frontoffice/flash.html.twig' %}
 <div class="container mx-auto grid grid-cols-3 my-16 gap-4">
+                {% if list %}
+                    <h2 class="text-center text-xl font-bold uppercase col-span-full">
+                    {% if list == "all" %}
+                        Tous les articles</h2>
+                    {% endif %}
+                    {% if list == "published" %}
+                        Articles publiés</h2>
+                    {% endif %}
+                    {% if list == "draft" %}
+                        Articles en brouillon</h2>
+                    {% endif %}
+                {% endif %}
+                <p class="col-span-full font-bold"> {{listPosts|length}} articles affichés / {{totalPosts}}</p>
+                {% if listPosts|length == 0 %}
+                   <div class="h-64 bg-cyan-600 flex justify-center items-center text-white font-bold text-lg uppercase start col-span-full">
+                        <p>Aucun articles</p>
+                    </div>             
+                {% endif %} 
     {% for post in listPosts %}
                     <div class="flex flex-col gap-4 border border-cyan-900 rounded-md p-4">
                         <div class="bg-cyan-950 h-64 flex items-center justify-center">
                             <h4 class="text-white font-extrabold text-xl text-center">{{ post.title }}</h4>
                         </div>
                         <div class="flex flex-col h-1/2 justify-between">
-                            <p> {{ post.chapo }} </p>
+                            <div class="flex justify-between">
+                                <p> {{ post.chapo }} </p>
+                                {% if post.statut == 'published' %}
+                                    <p class="p-2 bg-green-200 rounded-md">Publié</p>
+                                {% endif %}
+                                {% if post.statut == 'draft' %}
+                                    <p class="p-2 bg-yellow-200 rounded-md">Brouillon</p>
+                                {% endif %}
+                            </div>
                             <div class="flex justify-between">
                                 <div>
                                     <p class=""> {{ post.pseudo }} </p>
                                     <p> {{ post.createdAt|date('d/m/Y') }} </p>
                                 </div>
-                                <a href="?action=admin&postId={{ post.id }}" class="mt-auto p-2 rounded-md bg-cyan-600 text-white"> Modifier l'article </a>
                             </div>
+                                <a href="?action=updatePost&postId={{ post.id }}" class="mt-auto p-2 rounded-md bg-cyan-600 text-white my-4 self-end"> Modifier l'article </a>
+                            <div class="flex justify-end gap-4">
+                            {% if post.statut == 'draft' %}
+                            <div class="flex flex-col gap-4">
+                                <a href="?action=publishedPost&postId={{post.id}}&list={{list}}" class="p-2 rounded-md bg-green-600 text-white self-end">Publier l'article</a>
+                                <a href="?action=deletedPost&postId={{post.id}}&list={{list}}" class="p-2 rounded-md bg-red-600 text-white self-end">Supprimer l'article</a>
+                            </div>
+                            {% endif %}
+                            {% if post.statut == "published" %}
+                                <a href="?action=draftedPost&postId={{post.id}}&list={{list}}" class="p-2 rounded-md bg-red-600 text-white">Mettre en brouillon</a>
+                            {% endif %}
+                            </div>
+                            
                         </div>
                     </div>
             {% endfor %}
+            <div class="flex flex-col items-center my-4 gap-4 col-span-full">
+                {% if totalPosts > 6 %}
+                    {% if limit < totalPosts %}
+                        <a href="?action=seeMore&postId={{post.id}}&list={{list}}" class="p-2 rounded-md bg-cyan-950 text-white">Voir plus</a>
+                    </div>
+                    {% endif %}
+                    {% if limit > totalPosts %}
+                        <a href="?action=seeLess&postId={{post.id}}&list={{list}}" class="p-2 rounded-md bg-cyan-950 text-white">Voir moins</a>
+                    {% endif %}
+                {% endif %}
+             </div>
 </div>
 {% endblock %}

@@ -15,7 +15,7 @@ final class BlogController
 
     public function displayPage(): string
     {
-        $posts = $this->postsRepository->findAll();
+        $posts = $this->postsRepository->findBy(['statut' => 'published'], ['createdAt' => 'DESC'], 6);
             return $this->view->render(['office' => 'front','template' => 'blog', 'data' => [
                 'listPosts' => $posts
             ]]);
