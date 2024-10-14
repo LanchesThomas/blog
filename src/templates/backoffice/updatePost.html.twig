@@ -1,0 +1,102 @@
+{% extends 'frontoffice/base.html.twig' %}
+
+{% block title %}Ajouter un nouvel article{% endblock %}
+
+
+{% block header %}
+<section class="mt-14 mx-auto bg-[url('assets/banner.avif')] h-96 relative p-4">
+    <div class="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>  
+    <div class="container mx-auto flex justify-center items-center flex-col h-full relative text-center ">
+        <h1 class="font-bold text-white uppercase" style="font-size: clamp(1.5rem, 1rem + 2.5vw, 3rem);">Modifier un article</h1>
+    </div>
+</section>
+{% endblock %}
+{% block main %}
+{% include 'frontoffice/flash.html.twig' %}
+<div class="container mx-auto flex my-16 gap-4">
+    <form method="post" class="w-full mx-4 flex flex-col gap-8">
+        <div class="flex flex-col gap-4">
+            <label for="title" class="text-xl font-bold">Modifier le titre de l'article</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="rounded-md min-h-8 text-black p-2 border"
+                required
+                value="{{post.title}}"
+                >
+                
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="chapo" class="text-xl font-bold">Modifier le chapô de l'article</label>
+            <textarea
+                id="chapo"
+                name="chapo"
+                class="rounded-md min-h-16 text-black p-2 border"
+                required
+                >{{ post.chapo }}</textarea>
+        </div>
+        <div class="flex flex-col gap-4">
+            <label for="content" class="text-xl font-bold">Modifier le contenu de l'article</label>
+            <textarea
+                id="content"
+                name="content"
+                class="rounded-md min-h-64 text-black p-2 border"
+                required
+                >{{ post.content }}
+                </textarea>
+        </div>
+        <div class="flex flex-col gap-4">
+            <p for="content" class="text-xl font-bold">Modifier l'auteur de l'article</p>
+            <fieldset class="flex gap-4">
+                <div class="relative">
+                    <!-- Input radio caché -->
+                    <input 
+                        type="radio"
+                        id="{{post.pseudo}}" 
+                        value="{{post.pseudo}}"
+                        name="author"
+                        checked 
+                        class="hidden peer"
+                    />
+                    
+                    <!-- Label stylisé avec un état dépendant du bouton radio -->
+                    <label 
+                        for="{{post.pseudo}}" 
+                        class="p-2 rounded-md bg-cyan-600 text-white cursor-pointer peer-checked:bg-cyan-950">
+                        {{post.pseudo}}
+                    </label>
+                </div>
+
+                    {% for user in users %}
+                        {% if user.pseudo != post.pseudo %}
+                        <div class="relative">
+                            <!-- Input radio caché -->
+                            <input 
+                                type="radio"
+                                id="{{user.pseudo}}" 
+                                value="{{user.pseudo}}"
+                                name="author" 
+                                class="hidden peer"
+                            />
+                            
+                            <!-- Label stylisé avec état dépendant du bouton radio -->
+                            <label 
+                                for="{{user.pseudo}}" 
+                                class="p-2 rounded-md bg-cyan-600 text-white cursor-pointer peer-checked:bg-cyan-950">
+                                {{user.pseudo}}
+                            </label>
+                        </div>
+
+                        {% endif %}
+                    {% endfor %}
+            </fieldset>
+        </div>
+        <input 
+            class="p-4 bg-cyan-800 rounded-md cursor-pointer text-white inline" 
+            type="submit">
+        </input>
+    </form>
+    
+</div>
+{% endblock %}

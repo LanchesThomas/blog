@@ -98,7 +98,7 @@ final readonly class UserRepository
         $queryString = implode(' AND ', $queryParts);
 
         // Construction de la requête SQL
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM users";
 
         if (!empty($queryParts)) {
             $sql .= " WHERE $queryString";

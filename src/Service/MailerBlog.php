@@ -7,11 +7,9 @@ namespace App\Service;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
-use Twig\Environment;
 
 class MailerBlog
 {
-    private Environment $twig;
     private Mailer $mailerSF;
 
     public function __construct(private array $settings)

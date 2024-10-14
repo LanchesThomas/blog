@@ -14,7 +14,8 @@ final class Post
         private string $chapo,
         private string $updatedAt,
         private string $pseudo,
-        private int $userId
+        private int $userId,
+        private string $statut
     ) {
     }
 
@@ -86,5 +87,15 @@ final class Post
     public function getUserId(): int
     {
         return $this->userId;
+    }
+
+    public function getStatut(): string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): void
+    {
+        $this->statut = $statut;
     }
 }

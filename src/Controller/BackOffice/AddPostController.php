@@ -28,10 +28,6 @@ final class AddPostController
                     $this->postsRepository->create($title, $chapo, $content);
                     $this->session->addFlashes('success', 'Article créé');
                 } catch (\PDOException $e) {
-                    echo '<pre>';
-                    var_dump($e);
-                    echo '</pre>';
-                    die;
                     $this->session->addFlashes('error', 'Impossible de créer l\'article');
                 }
             }

@@ -10,6 +10,7 @@ use App\Controller\BackOffice\UserAdminController;
 use App\Controller\BackOffice\ChangeRoleController;
 use App\Controller\BackOffice\CommentAdminController;
 use App\Controller\BackOffice\DeleteUser;
+use App\Controller\BackOffice\UpdatePostController;
 use App\Controller\FrontOffice\BlogController;
 use App\Controller\FrontOffice\ConnexionController;
 use App\Controller\FrontOffice\ErrorPageController;
@@ -75,11 +76,11 @@ final class Router
             $logOutController = new LogOutController($this->session);
             return $logOutController->logOut();
         } elseif ($action === 'admin' && !$this->session->isAuthenticated()) {
-            $connnexionController = new ConnexionController($this->view, $this ->request, $this->userRepository, $this->session);
+            $connnexionController = new ConnexionController($this->view, $this->request, $this->userRepository, $this->session);
             return $connnexionController->displayPage();
         } elseif ($this->session->isAuthenticated() && $this->session->getUser()['userRole'] === 'admin') {
-            if ($action === 'admin') {
-                $adminController = new AdminController($this->view, $this->postsRepository);
+            if ($action === 'admin' || $action === "publishedPost" || $action === "draftedPost" || $action === "deletedPost" || $action === "seeMore" || $action === "seeLess") {
+                $adminController = new AdminController($this->view, $this->postsRepository, $this->request, $this->session);
                 return $adminController->displayPage();
             } elseif ($action === 'addPost') {
                 $addPostController = new AddPostController($this->view, $this->postsRepository, $this->session, $this->request, $this->validator);
@@ -93,9 +94,12 @@ final class Router
             } elseif ($action === "deleteUser") {
                 $deleteUser = new DeleteUser($this->userRepository, $this->request, $this->session);
                 return $deleteUser->DeleteUser();
-            } elseif ($action === 'commentAdmin' || $action === 'allComments' || $action === 'validComments' || $action === 'commentToValid' ||  $action === 'validateComment' || $action === 'invalidateComment' || $action === 'deleteComment') {
-                $commentAdminController = new CommentAdminController($this->view, $this->commentsRepository, $this->session, $this->request, $this->validator);
+            } elseif ($action === 'commentAdmin' || $action === 'allComments' || $action === 'validComments' || $action === 'commentToValid' ||  $action === 'validateComment' || $action === 'invalidateComment' || $action === 'deleteComment' || $action === 'CseeMore' || $action === 'CseeLess') {
+                $commentAdminController = new CommentAdminController($this->view, $this->commentsRepository, $this->session, $this->request, $this->validator, $this->postsRepository);
                 return $commentAdminController->displayPage();
+            } elseif ($action === "updatePost") {
+                $updatePostController = new UpdatePostController($this->postsRepository, $this->request, $this->session, $this->view, $this->userRepository);
+                return $updatePostController->displayPage();
             }
         }
 
