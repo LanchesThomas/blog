@@ -34,7 +34,7 @@ final class CommentAdminController
         }
 
         $comments = $this->commentsRepository->findBy([], ['createdAt' => 'DESC'], $limit);
-        $totalComments = isset($comments) ? count($this->commentsRepository->findBy([], ['createdAt' => 'DESC'])) : 0;
+        $totalComments = $comments ? count($this->commentsRepository->findBy([], ['createdAt' => 'DESC'])) : 0;
 
         $postTitles = [];
         if ($comments) {
@@ -55,9 +55,8 @@ final class CommentAdminController
                     $postTitle = $this->postsRepository->findOneBy(['id' => $postId])->getTitle();
                     array_push($postTitles, $postTitle);
                 }
-                    $postTitles = $this->postsRepository->findOneBy(['id' => $postId])->getTitle();
             }
-            $totalComments = isset($comments) ? count($this->commentsRepository->findBy(['statut' => 'valid'], ['createdAt' => 'DESC'])) : 0;
+            $totalComments = $comments ? count($this->commentsRepository->findBy(['statut' => 'valid'], ['createdAt' => 'DESC'])) : 0;
         }
 
         if ($list === "commentToValid") {
@@ -69,7 +68,7 @@ final class CommentAdminController
                     array_push($postTitles, $postTitle);
                 }
             }
-            $totalComments = isset($comments) ? count($this->commentsRepository->findBy(['statut' => 'waiting'], ['createdAt' => 'DESC'])) : 0;
+            $totalComments = $comments ? count($this->commentsRepository->findBy(['statut' => 'waiting'], ['createdAt' => 'DESC'])) : 0;
         }
 
         if ($list === "invalidComments") {
@@ -81,7 +80,7 @@ final class CommentAdminController
                     array_push($postTitles, $postTitle);
                 }
             }
-            $totalComments = isset($comments) ? count($this->commentsRepository->findBy(['statut' => 'delete'], ['createdAt' => 'DESC'])) : 0;
+            $totalComments = $comments ? count($this->commentsRepository->findBy(['statut' => 'delete'], ['createdAt' => 'DESC'])) : 0;
         }
 
         if ($action === "validateComment") {

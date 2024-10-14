@@ -9,3 +9,6 @@ git push origin dev
 
 Launch PHP Server
 PHP -S localhost:8000 -t public
+
+Launch mailhog Server
+php src/service/mailhog/download_mailhog.php

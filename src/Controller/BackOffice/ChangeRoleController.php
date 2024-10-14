@@ -29,7 +29,8 @@ final class ChangeRoleController
                 } elseif ($role === 'admin') {
                     $this->userRepository->update($id, 'editor');
                     $this->session->addFlashes('success', 'Utilisateur modifié avec succès');
-                    $redirect = new \App\Service\RedirectResponse('?action=userAdmin');
+                    $this->session->clearUser();
+                    $redirect = new \App\Service\RedirectResponse('?action=connexion');
                     $redirect->send();
                 }
             } else {
