@@ -57,7 +57,10 @@ PHP -S localhost:8000 -t public
 ## Lancement serveur de mail
 
 Pour lancer le serveur de mail local [MailHOg](https://github.com/mailhog/MailHog) :
--Éxécuter la commande
+
+- Éxécuter la commande
 ```shell
 php src/service/mailhog/download_mailhog.php
 ``` 
+- Accéder aux serveurs mails 
+Aller à l'adresse : `http://localhost:8025/`
