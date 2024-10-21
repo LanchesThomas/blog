@@ -13,6 +13,15 @@ use App\Service\Session;
 use App\Service\Request;
 use App\Service\Validator;
 
+/**
+ * Displays the comment administration page, allowing the management of comments (validate, invalidate, delete).
+ * Fetches and lists comments based on their status (all, valid, waiting, or deleted), and includes post titles.
+ * Renders the 'commentAdmin' template with comments data and pagination.
+ *
+ * @return string The rendered view of the Comment Admin page.
+ */
+
+
 final class CommentAdminController
 {
     public function __construct(private View $view, private CommentsRepository $commentsRepository, private Session $session, private Request $request, private validator $validator, private PostsRepository $postsRepository)

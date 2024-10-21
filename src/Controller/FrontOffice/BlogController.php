@@ -7,6 +7,14 @@ namespace App\Controller\FrontOffice;
 use App\View\View;
 use App\Model\Repository\PostsRepository;
 
+/**
+ * Displays the blog page by fetching the latest published posts, limited to 6.
+ * Renders the 'blog' template with the list of posts.
+ *
+ * @return string The rendered view of the Blog page.
+ */
+
+
 final class BlogController
 {
     public function __construct(private View $view, private PostsRepository $postsRepository)

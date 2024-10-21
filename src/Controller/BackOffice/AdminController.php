@@ -9,6 +9,15 @@ use App\Model\Repository\PostsRepository;
 use App\Service\Request;
 use App\Service\Session;
 
+/**
+ * Displays the admin dashboard page, fetching posts based on query parameters.
+ * Handles post visibility actions (publish, draft, delete) and adjusts post limits for listing.
+ * Renders the 'admin' template with post data and session flash messages.
+ *
+ * @return string The rendered view of the Admin dashboard page.
+ */
+
+
 final class AdminController
 {
     public function __construct(private View $view, private PostsRepository $postsRepository, private Request $request, private Session $session)
@@ -22,9 +31,6 @@ final class AdminController
         $action = $this->request->queryAction('action');
         $postId = (int)$this->request->queryAction('postId');
         $totalsPosts   = 0;
-
-        var_dump($this->session->getUser());
-        die();
 
         $limit  = 6;
         if ($action === "seeMore") {

@@ -9,6 +9,20 @@ use App\Model\Entity\Post;
 use App\Service\ConnectDB;
 use App\Service\Session;
 
+/**
+ * Repository class for managing blog posts in the database.
+ *
+ * Methods:
+ * - findAll(): Retrieves all posts with their associated users.
+ * - find(int $id): Retrieves a post by its ID along with its user details.
+ * - findOneBy(array $criteria): Finds a single post based on criteria.
+ * - findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): Retrieves posts based on criteria, with optional ordering, limits, and offsets.
+ * - create(string $title, string $chapo, string $content): Adds a new post to the database.
+ * - update(?int $id, ?string $statut, ?string $title, ?string $chapo, ?string $content, ?int $userId): Updates post details dynamically.
+ * - delete(int $id): Deletes a post from the database.
+ */
+
+
 final readonly class PostsRepository
 {
     public function __construct(private Session $session)

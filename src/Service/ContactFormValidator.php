@@ -4,7 +4,23 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-class ContactFormValidator extends Validator
+/**
+ * Validates the contact form inputs (firstname, lastname, email, message).
+ * Extends the base Validator class for specific validation rules.
+ *
+ * Methods:
+ * - isValid(?string $firstname, ?string $lastname, ?string $email, ?string $message): Validates all fields and returns true if all are valid, otherwise false.
+ * - getErrorMessage(): Returns an array of error messages generated during validation.
+ *
+ * Private Methods:
+ * - isFirstnameValid($firstname): Validates the firstname field.
+ * - isLastnameValid($lastname): Validates the lastname field.
+ * - isEmailValid($email): Validates the email field.
+ * - isMessageValid($message): Validates the message field.
+ */
+
+
+final class ContactFormValidator extends Validator
 {
     private array $errorMessage = [];
 

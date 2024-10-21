@@ -10,6 +10,14 @@ use App\Service\Session;
 use App\Service\Request;
 use App\Service\Validator;
 
+/**
+ * Displays the "Add Post" page and handles post submission.
+ * Renders the 'addPost' template.
+ *
+ * @return string The rendered view of the Add Post page.
+ */
+
+
 final class AddPostController
 {
     public function __construct(private View $view, private PostsRepository $postsRepository, private Session $session, private Request $request, private validator $validator)

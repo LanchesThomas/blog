@@ -10,6 +10,15 @@ use App\Service\Request;
 use App\Service\Session;
 use App\View\View;
 
+/**
+ * Displays and processes the post update form.
+ * If the form is submitted (POST request), it updates the post's title, chapo, content, and author in the repository.
+ * Fetches the post and list of admin users to render the 'updatePost' template.
+ *
+ * @return string The rendered view of the Update Post page.
+ */
+
+
 final class UpdatePostController
 {
     public function __construct(private PostsRepository $postsRepository, private Request $request, private Session $session, private View $view, private UserRepository $userRepository)

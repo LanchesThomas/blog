@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Controller\FrontOffice;
 
 use App\Service\Request;
-use App\Service\Validator;
 use App\Service\ContactFormValidator;
 use App\View\View;
 use App\Service\Session;
-use App\Service\RedirectResponse;
 use App\Service\MailerBlog;
+
+/**
+ * Displays the homepage and handles contact form submissions.
+ * Validates form input, sends an email if valid.
+ * If the email fails or input is invalid, the form is re-rendered with previous input values.
+ *
+ * @return string The rendered view of the Home page.
+ */
+
 
 final class HomeController
 {

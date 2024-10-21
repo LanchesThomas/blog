@@ -6,6 +6,13 @@ namespace App\Controller\FrontOffice;
 
 use App\View\View;
 
+/**
+ * Displays the error page by rendering the 'error' template.
+ *
+ * @return string The rendered view of the Error page.
+ */
+
+
 final class ErrorPageController
 {
     public function __construct(private View $view)
@@ -14,9 +21,6 @@ final class ErrorPageController
 
     public function displayPage(): string
     {
-
-           // $twig = $this->view->render();
-            // echo $twig->render('frontoffice/homepage.html.twig', ['name' => 'Fabien']);
             return $this->view->render(['office' => 'front', 'template' => 'error', 'data' => []]);
     }
 }

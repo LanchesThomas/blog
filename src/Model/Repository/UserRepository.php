@@ -7,6 +7,20 @@ namespace App\Model\Repository;
 use App\Model\Entity\User;
 use App\Service\ConnectDB;
 
+/**
+ * Repository class for managing users in the database.
+ *
+ * Methods:
+ * - findAll(): Retrieves all users from the database.
+ * - find(string $mail): Finds a user by their email address.
+ * - findOneBy(array $criteria): Finds a single user based on given criteria.
+ * - findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): Retrieves users based on criteria, with optional ordering, limits, and offsets.
+ * - create(string $mail, string $pseudo, string $password): Adds a new user to the database.
+ * - update(int $id, string $role): Updates the role of a user by their ID.
+ * - delete(int $id): Deletes a user from the database.
+ */
+
+
 final readonly class UserRepository
 {
     public function __construct()

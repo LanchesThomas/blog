@@ -9,6 +9,15 @@ use App\Model\Repository\UserRepository;
 use App\Service\Session;
 use App\View\View;
 
+/**
+ * Handles user login by processing form submission (POST request).
+ * Validates the provided email and password, sets the user session if authentication is successful, and redirects to the home page.
+ * If login fails, adds error messages to the session and renders the login form.
+ *
+ * @return string The rendered view of the Connexion (login) page.
+ */
+
+
 final class ConnexionController
 {
     public function __construct(private View $view, private Request $request, private UserRepository $userRepository, private Session $session)

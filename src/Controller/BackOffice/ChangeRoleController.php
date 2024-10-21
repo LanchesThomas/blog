@@ -8,6 +8,14 @@ use App\Model\Repository\UserRepository;
 use App\Service\Request;
 use App\Service\Session;
 
+/**
+ * Handles user role changes based on the provided user ID and role.
+ * Updates the user's role between 'admin' and 'editor,' except for the super admin (ID 1).
+ *
+ * @return void
+ */
+
+
 final class ChangeRoleController
 {
     public function __construct(private UserRepository $userRepository, private Request $request, private Session $session)

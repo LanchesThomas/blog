@@ -23,11 +23,21 @@ use App\Service\Request;
 use App\Service\ContactFormValidator;
 use App\Service\Validator;
 use App\Service\Session;
-use App\Model\BlogModel;
 use App\Model\Repository\PostsRepository;
 use App\Model\Repository\CommentsRepository;
 use App\Model\Repository\UserRepository;
 use App\Service\MailerBlog;
+
+/**
+ * Main application router responsible for handling different actions and routing requests to appropriate controllers.
+ *
+ * Constructor:
+ * - __construct(Request $request): Initializes the router with the request and sets up dependencies like session, view, repositories, and services.
+ *
+ * Methods:
+ * - run(): Determines the action based on the request query and routes the request to the corresponding controller. It handles various actions like 'home', 'blog', 'connexion', 'inscription', 'admin', and more, depending on user authentication and roles. Returns the appropriate view or page content.
+ */
+
 
 final class Router
 {
