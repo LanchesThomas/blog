@@ -4,6 +4,21 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+/**
+ * Represents a blog post.
+ *
+ * @property ?int $id The unique identifier of the post (nullable).
+ * @property string $title The title of the post.
+ * @property string $content The main content of the post.
+ * @property string $createdAt The date and time the post was created.
+ * @property string $chapo The introductory or summary text of the post.
+ * @property string $updatedAt The date and time the post was last updated.
+ * @property string $pseudo The pseudonym of the author of the post.
+ * @property int $userId The ID of the user who created the post.
+ * @property string $statut The status of the post (e.g., 'published', 'draft').
+ */
+
+
 final class Post
 {
     public function __construct(

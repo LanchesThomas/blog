@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-class RedirectResponse
+/**
+ * Handles HTTP redirection responses.
+ *
+ * Constructor:
+ * - __construct(string $url, int $statusCode = 302): Initializes the redirect with a URL and optional HTTP status code (default is 302 for a temporary redirect).
+ *
+ * Methods:
+ * - send(): Sends the redirect header if headers have not already been sent, or uses JavaScript and a meta refresh tag as a fallback. Terminates the script after execution.
+ */
+
+
+final class RedirectResponse
 {
     public function __construct(private string $url, private int $statusCode = 302)
     {

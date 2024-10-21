@@ -8,7 +8,18 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
-class MailerBlog
+/**
+ * Handles sending emails using Symfony Mailer.
+ *
+ * Constructor:
+ * - __construct(array $settings): Initializes the Mailer with SMTP settings provided in the configuration array.
+ *
+ * Methods:
+ * - sendMessage(string $subject, string $content, string $dest): Sends an email with the given subject, content, and destination email address. Returns true if the email is sent successfully, or false if an error occurs.
+ */
+
+
+final class MailerBlog
 {
     private Mailer $mailerSF;
 

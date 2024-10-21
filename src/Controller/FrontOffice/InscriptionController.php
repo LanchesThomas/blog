@@ -9,6 +9,15 @@ use App\Model\Repository\UserRepository;
 use App\Service\Session;
 use App\View\View;
 
+/**
+ * Handles user registration by processing form submissions (POST request).
+ * Validates email, username, and password input. If valid, creates a new user account and provides success feedback.
+ * If validation or user creation fails, appropriate error messages are added to the session.
+ * Redirects to the login page upon successful registration.
+ *
+ * @return string The rendered view of the Registration (inscription)
+**/
+
 final class InscriptionController
 {
     public function __construct(

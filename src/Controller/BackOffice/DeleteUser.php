@@ -8,6 +8,13 @@ use App\Model\Repository\UserRepository;
 use App\Service\Request;
 use App\Service\Session;
 
+/**
+ * Deletes a user by their ID, except for the super admin (ID 1).
+ *
+ * @return void
+ */
+
+
 final class DeleteUser
 {
     public function __construct(private UserRepository $userRepository, private Request $request, private Session $session)

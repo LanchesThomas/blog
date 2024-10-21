@@ -8,6 +8,20 @@ use App\Model\Entity\Comments;
 use App\Service\ConnectDB;
 use App\Model\Entity\Post;
 
+/**
+ * Repository class for managing comments in the database.
+ *
+ * Methods:
+ * - findAll(): Retrieves all comments with their associated posts and users.
+ * - find(int $id): Retrieves a comment by its ID along with its post and user details.
+ * - findOneBy(array $criteria): Finds a single comment based on criteria.
+ * - findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): Retrieves comments based on criteria, with optional ordering, limits, and offsets.
+ * - create(Post $post, string $comments, int $userId, string $pseudo): Adds a new comment to the database.
+ * - update(int $id, string $statut): Updates the status of a comment.
+ * - delete(int $id): Deletes a comment from the database.
+ */
+
+
 final readonly class CommentsRepository
 {
     public function __construct()
