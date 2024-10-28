@@ -56,7 +56,7 @@ final class PostController
 
         $is_comments   = $this->commentsRepository->findBy(['post_id' => $this->postId]) != null;
         if ($is_comments) {
-            $totalComments = count($this->commentsRepository->findBy(['post_id' => $this->postId, 'statut' => 'valid']));
+            $totalComments = $comments ? count($this->commentsRepository->findBy(['post_id' => $this->postId, 'statut' => 'valid'])) : 0;
 
                 return $this->view->render(['office' => 'front', 'template' => 'post', 'data' => [
                     'post' => $postId, 'comments' => $comments, 'totalComments' => $totalComments, 'limit' => $limit
